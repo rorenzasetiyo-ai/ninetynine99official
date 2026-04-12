@@ -1,0 +1,331 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>NINETYNINE Admin Dashboard</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; background: #f5f5f5; }
+        
+        .container { display: flex; height: 100vh; }
+        
+        /* Sidebar */
+        .sidebar {
+            width: 280px;
+            background: #1a1a1a;
+            color: white;
+            padding: 20px;
+            overflow-y: auto;
+            border-right: 1px solid #333;
+        }
+        
+        .sidebar h2 {
+            font-size: 18px;
+            margin-bottom: 30px;
+            padding-bottom: 15px;
+            border-bottom: 1px solid #333;
+        }
+        
+        .nav-item {
+            padding: 12px 15px;
+            margin-bottom: 8px;
+            cursor: pointer;
+            border-radius: 6px;
+            transition: all 0.3s;
+            border-left: 3px solid transparent;
+        }
+        
+        .nav-item:hover { background: #333; }
+        .nav-item.active {
+            background: #000;
+            border-left-color: #000;
+            font-weight: bold;
+        }
+        
+        /* Main Content */
+        .main {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+        }
+        
+        /* Header */
+        .header {
+            background: #0d0d0d;
+            color: white;
+            padding: 20px;
+            border-bottom: 1px solid #333;
+        }
+        
+        .header h1 { font-size: 20px; }
+        
+        /* Editor Area */
+        .editor-area {
+            flex: 1;
+            display: flex;
+            overflow: hidden;
+        }
+        
+        .editor-panel {
+            flex: 1;
+            padding: 30px;
+            overflow-y: auto;
+            background: white;
+        }
+        
+        /* Preview */
+        .preview-panel {
+            flex: 1;
+            border-left: 1px solid #ddd;
+            overflow-y: auto;
+            background: white;
+            padding: 20px;
+        }
+        
+        .preview-panel h3 { margin-bottom: 15px; color: #333; }
+        .preview-content {
+            padding: 15px;
+            background: #f9f9f9;
+            border-radius: 6px;
+            border: 1px solid #ddd;
+        }
+        
+        /* Form Controls */
+        .form-group {
+            margin-bottom: 20px;
+        }
+        
+        .form-group label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 500;
+            color: #333;
+        }
+        
+        .form-group input,
+        .form-group textarea,
+        .form-group select {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            font-family: inherit;
+            font-size: 14px;
+        }
+        
+        .form-group textarea { min-height: 100px; resize: vertical; }
+        
+        /* Buttons */
+        .button-group {
+            display: flex;
+            gap: 10px;
+            margin-top: 30px;
+            padding-top: 20px;
+            border-top: 1px solid #eee;
+        }
+        
+        button {
+            padding: 12px 24px;
+            border: none;
+            border-radius: 4px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s;
+            font-size: 14px;
+        }
+        
+        .btn-preview { background: #000; color: white; }
+        .btn-preview:hover { background: #333; }
+        
+        .btn-save { background: #000; color: white; flex: 1; }
+        .btn-save:hover { background: #333; }
+        
+        /* Message */
+        .message {
+            padding: 12px;
+            border-radius: 4px;
+            margin-bottom: 20px;
+            display: none;
+        }
+        
+        .message.success { background: #000; color: white; display: block; }
+        .message.error { background: #f44; color: white; display: block; }
+        
+        /* Hidden */
+        .hidden { display: none !important; }
+        
+        /* Responsive */
+        @media (max-width: 1024px) {
+            .preview-panel { display: none; }
+        }
+        
+        @media (max-width: 768px) {
+            .sidebar { width: 200px; }
+            .editor-panel { padding: 20px; }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <!-- Sidebar -->
+        <div class="sidebar">
+            <h2>📊 Admin Panel</h2>
+            <div class="nav-item active" data-section="hero">🏠 Hero</div>
+            <div class="nav-item" data-section="marquee">📜 Marquee</div>
+            <div class="nav-item" data-section="bestseller">⭐ Bestseller</div>
+            <div class="nav-item" data-section="collection">🎨 Collection</div>
+            <div class="nav-item" data-section="ourpicks">🎯 Our Picks</div>
+            <div class="nav-item" data-section="stores">🏪 Stores</div>
+            <div class="nav-item" data-section="footer">📞 Footer</div>
+        </div>
+        
+        <!-- Main Content -->
+        <div class="main">
+            <!-- Header -->
+            <div class="header">
+                <h1>✏️ Edit Content</h1>
+            </div>
+            
+            <!-- Editor Area -->
+            <div class="editor-area">
+                <!-- Editor Panel -->
+                <div class="editor-panel">
+                    <div class="message" id="message"></div>
+                    <div id="editor-content"></div>
+                </div>
+                
+                <!-- Preview Panel -->
+                <div class="preview-panel">
+                    <h3>👁️ Preview</h3>
+                    <div class="preview-content" id="preview"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <script>
+        // Simple Admin Interface
+        const STORAGE_KEY = 'ninetynine_admin_data';
+        let currentSection = 'hero';
+        let currentData = {};
+        
+        // Load data from localStorage
+        function loadData() {
+            const saved = localStorage.getItem(STORAGE_KEY);
+            currentData = saved ? JSON.parse(saved) : getDefaultData();
+        }
+        
+        // Default structure
+        function getDefaultData() {
+            return {
+                hero: { title: 'Welcome', subtitle: 'Fashion for Everyone', image: '' },
+                marquee: { text: 'New Collection Available', color: '#000', speed: 'normal' },
+                bestseller: [ { name: 'Product 1', price: '$99', image: '' } ],
+                collection: { name: 'New Season', description: 'New collection' },
+                ourpicks: [ { name: 'Pick 1', price: '$199', image: '' } ],
+                stores: [ { name: 'Store 1', address: 'Address', hours: '10AM-6PM' } ],
+                footer: { brand: 'NINETYNINE', email: 'hello@ninetynine.com' }
+            };
+        }
+        
+        // Initialize
+        function init() {
+            loadData();
+            setupNavigation();
+            renderSection('hero');
+        }
+        
+        // Setup navigation
+        function setupNavigation() {
+            document.querySelectorAll('.nav-item').forEach(item => {
+                item.addEventListener('click', () => {
+                    document.querySelectorAll('.nav-item').forEach(el => el.classList.remove('active'));
+                    item.classList.add('active');
+                    renderSection(item.dataset.section);
+                });
+            });
+        }
+        
+        // Render section editor
+        function renderSection(section) {
+            currentSection = section;
+            const container = document.getElementById('editor-content');
+            const data = currentData[section] || {};
+            
+            let html = '<div class="form-group"><h2>' + section.toUpperCase() + ' Section</h2></div>';
+            
+            if (section === 'hero') {
+                html += `
+                    <div class="form-group">
+                        <label>Title</label>
+                        <input type="text" id="title" value="${data.title || ''}">
+                    </div>
+                    <div class="form-group">
+                        <label>Subtitle</label>
+                        <input type="text" id="subtitle" value="${data.subtitle || ''}">
+                    </div>
+                    <div class="form-group">
+                        <label>Image URL</label>
+                        <input type="text" id="image" value="${data.image || ''}">
+                    </div>
+                `;
+            }
+            
+            html += `
+                <div class="button-group">
+                    <button class="btn-preview" onclick="previewChanges()">👁️ Preview</button>
+                    <button class="btn-save" onclick="saveChanges()">💾 Simpan Permanen</button>
+                </div>
+            `;
+            
+            container.innerHTML = html;
+            updatePreview();
+        }
+        
+        // Preview changes
+        function previewChanges() {
+            const msg = document.getElementById('message');
+            msg.textContent = '✅ Preview updated! (tidak tersimpan)';
+            msg.className = 'message success';
+            updatePreview();
+        }
+        
+        // Save changes
+        function saveChanges() {
+            const section = currentSection;
+            const inputs = document.querySelectorAll('[id]');
+            
+            const sectionData = {};
+            inputs.forEach(input => {
+                if (input.id) sectionData[input.id] = input.value;
+            });
+            
+            currentData[section] = sectionData;
+            localStorage.setItem(STORAGE_KEY, JSON.stringify(currentData));
+            
+            const msg = document.getElementById('message');
+            msg.textContent = '✅ Data tersimpan! Perubahan akan muncul di website';
+            msg.className = 'message success';
+            
+            setTimeout(() => msg.style.display = 'none', 3000);
+        }
+        
+        // Update preview
+        function updatePreview() {
+            const preview = document.getElementById('preview');
+            const data = currentData[currentSection] || {};
+            
+            let html = '<strong>' + currentSection + '</strong><br>';
+            for (let key in data) {
+                html += '<br><em>' + key + ':</em> ' + (data[key] || '(empty)');
+            }
+            
+            preview.innerHTML = html;
+        }
+        
+        // Start
+        init();
+    </script>
+</body>
+</html>

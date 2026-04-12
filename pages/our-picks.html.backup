@@ -1,0 +1,174 @@
+<section id="ourpicks">
+  <div class="container">
+    <div class="section-head reveal">
+      <div>
+        <span class="section-label">Curated For You</span>
+        <h2 class="section-title">Our Picks</h2>
+      </div>
+      <a href="#" class="section-head-link" onclick="openAllProductsPage();return false;">Browse All</a>
+    </div>
+    <div class="product-grid">
+      <!-- Pick 1 -->
+      <div class="product-card reveal">
+        <div class="product-img-wrap" style="cursor:pointer;" onclick="openProductDetail('prod_4'); return false;">
+          <img class="img-main" loading="lazy" src="images/img-10.jpeg" alt="Flowcolour Cream Blouse" style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover;object-position:center top;">
+          <img class="img-hover" loading="lazy" src="images/img-11.jpeg" alt="Flowcolour Cream Blouse hover" style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover;object-position:center top;">
+          <div class="product-actions">
+            <button class="product-action-btn wishlist-btn" aria-label="Add to wishlist" data-id="prod_4" data-name="Flowcolour Cream Blouse" data-series="Code TPSHRL 9157" data-price="IDR 128.000" onclick="toggleWishlist(this)">
+              <svg viewBox="0 0 24 24"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg>
+            </button>
+            <button class="product-action-btn" aria-label="Add to cart" onclick="quickAddToCart('prod_4'); return false;">
+              <svg viewBox="0 0 24 24"><path d="M6 2L3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z"/><line x1="3" y1="6" x2="21" y2="6"/><path d="M16 10a4 4 0 0 1-8 0"/></svg>
+            </button>
+          </div>
+        </div>
+        <div class="product-info">
+          <p class="product-series">Code TPSHRL 9157</p>
+          <p class="product-name">Flowcolour Cream Blouse</p>
+          <p class="product-price">IDR 128.000</p>
+        </div>
+      </div>
+      <!-- Pick 2 -->
+      <div class="product-card reveal" style="transition-delay:0.1s">
+        <div class="product-img-wrap" style="cursor:pointer;" onclick="openProductDetail('prod_5'); return false;">
+          <img class="img-main" loading="lazy" src="images/img-12.jpeg" alt="Flow Pearlbelt Dress" style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover;object-position:center top;">
+          <img class="img-hover" loading="lazy" src="images/img-13.jpeg" alt="Flow Pearlbelt Dress hover" style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover;object-position:center top;">
+          <div class="product-actions">
+            <button class="product-action-btn wishlist-btn" aria-label="Add to wishlist" data-id="prod_5" data-name="Flow Pearlbelt Dress" data-series="Code DRJSW 00018" data-price="IDR 240.000" onclick="toggleWishlist(this)">
+              <svg viewBox="0 0 24 24"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg>
+            </button>
+            <button class="product-action-btn" aria-label="Add to cart" onclick="quickAddToCart('prod_5'); return false;">
+              <svg viewBox="0 0 24 24"><path d="M6 2L3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z"/><line x1="3" y1="6" x2="21" y2="6"/><path d="M16 10a4 4 0 0 1-8 0"/></svg>
+            </button>
+          </div>
+        </div>
+        <div class="product-info">
+          <p class="product-series">Code DRJSW 00018</p>
+          <p class="product-name">Flow Pearlbelt Dress</p>
+          <p class="product-price">IDR 240.000</p>
+        </div>
+      </div>
+      <!-- Pick 3 -->
+      <div class="product-card reveal" style="transition-delay:0.2s">
+        <div class="product-img-wrap" style="cursor:pointer;" onclick="openProductDetail('prod_6'); return false;">
+          <img class="img-main" loading="lazy" src="images/img-14.jpeg" alt="Twocolors Bordir Tunic" style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover;object-position:center top;">
+          <img class="img-hover" loading="lazy" src="images/img-15.jpeg" alt="Twocolors Bordir Tunic hover" style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover;object-position:center top;">
+          <div class="product-actions">
+            <button class="product-action-btn wishlist-btn" aria-label="Add to wishlist" data-id="prod_6" data-name="Twocolors Bordir Tunic" data-series="Code DRYRI 9300" data-price="IDR 195.000" onclick="toggleWishlist(this)">
+              <svg viewBox="0 0 24 24"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg>
+            </button>
+            <button class="product-action-btn" aria-label="Add to cart" onclick="quickAddToCart('prod_6'); return false;">
+              <svg viewBox="0 0 24 24"><path d="M6 2L3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z"/><line x1="3" y1="6" x2="21" y2="6"/><path d="M16 10a4 4 0 0 1-8 0"/></svg>
+            </button>
+          </div>
+        </div>
+        <div class="product-info">
+          <p class="product-series">Code DRYRI 9300</p>
+          <p class="product-name">Twocolors Bordir Tunic</p>
+          <p class="product-price">IDR 195.000</p>
+        </div>
+      </div>
+      <!-- Pick 4 -->
+      <div class="product-card reveal" style="transition-delay:0.3s">
+        <div class="product-img-wrap" style="cursor:pointer;" onclick="openProductDetail('prod_7'); return false;">
+          <img class="img-main" loading="lazy" src="images/img-16.jpeg" alt="Flow Pattern Dress" style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover;object-position:center top;">
+          <img class="img-hover" loading="lazy" src="images/img-17.jpeg" alt="Flow Pattern Dress hover" style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover;object-position:center top;">
+          <div class="product-actions">
+            <button class="product-action-btn wishlist-btn" aria-label="Add to wishlist" data-id="prod_7" data-name="Flow Pattern Dress" data-series="Code DRGNT 00137" data-price="IDR 185.000" onclick="toggleWishlist(this)">
+              <svg viewBox="0 0 24 24"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg>
+            </button>
+            <button class="product-action-btn" aria-label="Add to cart" onclick="quickAddToCart('prod_7'); return false;">
+              <svg viewBox="0 0 24 24"><path d="M6 2L3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z"/><line x1="3" y1="6" x2="21" y2="6"/><path d="M16 10a4 4 0 0 1-8 0"/></svg>
+            </button>
+          </div>
+        </div>
+        <div class="product-info">
+          <p class="product-series">Code DRGNT 00137</p>
+          <p class="product-name">Flow Pattern Dress</p>
+          <p class="product-price">IDR 185.000</p>
+        </div>
+      </div>
+      <!-- Pick 5: Nudes Vinesbordir Tunic -->
+      <div class="product-card reveal">
+        <div class="product-img-wrap" style="cursor:pointer;" onclick="openProductDetail('prod_8'); return false;">
+          <div class="badge soldout">Sold Out</div>
+          <img class="img-main" loading="lazy" src="images/img-18.jpeg" alt="Nudes Vinesbordir Tunic" style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover;object-position:center top;">
+          <img class="img-hover" loading="lazy" src="images/img-19.jpeg" alt="Nudes Vinesbordir Tunic hover" style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover;object-position:center top;">
+          <div class="product-actions">
+            <button class="product-action-btn wishlist-btn" aria-label="Add to wishlist" data-id="prod_8" data-name="Nudes Vinesbordir Tunic" data-series="Code TPBAP 3178" data-price="IDR 146.000" onclick="toggleWishlist(this)">
+              <svg viewBox="0 0 24 24"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg>
+            </button>
+            <button class="product-action-btn" aria-label="Add to cart" onclick="quickAddToCart('prod_8'); return false;">
+              <svg viewBox="0 0 24 24"><path d="M6 2L3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z"/><line x1="3" y1="6" x2="21" y2="6"/><path d="M16 10a4 4 0 0 1-8 0"/></svg>
+            </button>
+          </div>
+        </div>
+        <div class="product-info">
+          <p class="product-series">Code TPBAP 3178</p>
+          <p class="product-name">Nudes Vinesbordir Tunic</p>
+          <p class="product-price">IDR 146.000</p>
+        </div>
+      </div>
+      <!-- Pick 6: Flowlace Shirt -->
+      <div class="product-card reveal" style="transition-delay:0.1s">
+        <div class="product-img-wrap" style="cursor:pointer;" onclick="openProductDetail('prod_9'); return false;">
+          <img class="img-main" loading="lazy" src="images/img-20.jpeg" alt="Flowlace Shirt" style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover;object-position:center top;">
+          <img class="img-hover" loading="lazy" src="images/img-21.jpeg" alt="Flowlace Shirt hover" style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover;object-position:center top;">
+          <div class="product-actions">
+            <button class="product-action-btn wishlist-btn" aria-label="Add to wishlist" data-id="prod_9" data-name="Flowlace Shirt" data-series="Code TPMGR 00020" data-price="IDR 149.000" onclick="toggleWishlist(this)">
+              <svg viewBox="0 0 24 24"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg>
+            </button>
+            <button class="product-action-btn" aria-label="Add to cart" onclick="quickAddToCart('prod_9'); return false;">
+              <svg viewBox="0 0 24 24"><path d="M6 2L3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z"/><line x1="3" y1="6" x2="21" y2="6"/><path d="M16 10a4 4 0 0 1-8 0"/></svg>
+            </button>
+          </div>
+        </div>
+        <div class="product-info">
+          <p class="product-series">Code TPMGR 00020</p>
+          <p class="product-name">Flowlace Shirt</p>
+          <p class="product-price">IDR 149.000</p>
+        </div>
+      </div>
+      <!-- Pick 7: Brukat Skirt -->
+      <div class="product-card reveal" style="transition-delay:0.2s">
+        <div class="product-img-wrap" style="cursor:pointer;" onclick="openProductDetail('prod_10'); return false;">
+          <img class="img-main" loading="lazy" src="images/img-22.jpeg" alt="Brukat Skirt" style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover;object-position:center top;">
+          <img class="img-hover" loading="lazy" src="images/img-23.jpeg" alt="Brukat Skirt hover" style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover;object-position:center top;">
+          <div class="product-actions">
+            <button class="product-action-btn wishlist-btn" aria-label="Add to wishlist" data-id="prod_10" data-name="Brukat Skirt" data-series="Code TVAVM 5069" data-price="IDR 139.000" onclick="toggleWishlist(this)">
+              <svg viewBox="0 0 24 24"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg>
+            </button>
+            <button class="product-action-btn" aria-label="Add to cart" onclick="quickAddToCart('prod_10'); return false;">
+              <svg viewBox="0 0 24 24"><path d="M6 2L3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z"/><line x1="3" y1="6" x2="21" y2="6"/><path d="M16 10a4 4 0 0 1-8 0"/></svg>
+            </button>
+          </div>
+        </div>
+        <div class="product-info">
+          <p class="product-series">Code TVAVM 5069</p>
+          <p class="product-name">Brukat Skirt</p>
+          <p class="product-price">IDR 139.000</p>
+        </div>
+      </div>
+      <!-- Pick 8: Semiouter Flowdress -->
+      <div class="product-card reveal" style="transition-delay:0.3s">
+        <div class="product-img-wrap" style="cursor:pointer;" onclick="openProductDetail('prod_11'); return false;">
+          <img class="img-main" loading="lazy" src="images/img-24.jpeg" alt="Semiouter Flowdress" style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover;object-position:center top;">
+          <img class="img-hover" loading="lazy" src="images/img-25.jpeg" alt="Semiouter Flowdress hover" style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover;object-position:center top;">
+          <div class="product-actions">
+            <button class="product-action-btn wishlist-btn" aria-label="Add to wishlist" data-id="prod_11" data-name="Semiouter Flowdress" data-series="Code DRYR 2979" data-price="IDR 215.000" onclick="toggleWishlist(this)">
+              <svg viewBox="0 0 24 24"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg>
+            </button>
+            <button class="product-action-btn" aria-label="Add to cart" onclick="quickAddToCart('prod_11'); return false;">
+              <svg viewBox="0 0 24 24"><path d="M6 2L3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z"/><line x1="3" y1="6" x2="21" y2="6"/><path d="M16 10a4 4 0 0 1-8 0"/></svg>
+            </button>
+          </div>
+        </div>
+        <div class="product-info">
+          <p class="product-series">Code DRYR 2979</p>
+          <p class="product-name">Semiouter Flowdress</p>
+          <p class="product-price">IDR 215.000</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>

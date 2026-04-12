@@ -1,0 +1,1270 @@
+// ═══════════════════════════════════════════════════
+// NINETYNINE — CORE PRODUCT & CART SYSTEM
+// ═══════════════════════════════════════════════════
+
+const PRODUCT_CATALOG = [
+  { id:'prod_0',  series:"Code SESTRA 5050 Oneseat", name:"Siderope Flowbordir",         price:"IDR 128.000", imgMainId:"catalog-main-0",  imgHoverId:"catalog-hover-0",  colors:[{name:"Cream",hex:"#F0EDE4"},{name:"Black",hex:"#2B2B2B"}],                                                description:"Oneset flowbordir dengan siluet elegan. Material lembut dan nyaman untuk aktivitas harian maupun acara spesial.", material:"Crepe Bordir" },
+  { id:'prod_1',  series:"Code DRLFY 6080",          name:"Cream Bordir Dress",           price:"IDR 189.000", imgMainId:"catalog-main-1",  imgHoverId:"catalog-hover-1",  colors:[{name:"Cream",hex:"#F5F0E8"}],                                                                             description:"Dress bordir cream yang feminin dan elegan. Potongan flowy yang nyaman dan cocok untuk berbagai kesempatan.", material:"Crepe Bordir" },
+  { id:'prod_2',  series:"Code DRYN 6357",            name:"Seemivest Bordir Flow Dress",  price:"IDR 195.000", imgMainId:"catalog-main-2",  imgHoverId:"catalog-hover-2",  colors:[{name:"Brown",hex:"#7B5B44"},{name:"Cream",hex:"#F0EBE0"}],                                               description:"Seemivest dengan detail bordir cantik, flow dress yang anggun dan fleksibel.", material:"Crepe Bordir" },
+  { id:'prod_3',  series:"Code TNVX 8307",            name:"3 Pocky Top",                  price:"IDR 165.000", imgMainId:"catalog-main-3",  imgHoverId:"catalog-hover-3",  colors:[{name:"Cream",hex:"#EDE8DC"},{name:"Olive",hex:"#8B8B6B"}],                                               description:"Top tiga saku dengan desain minimalis yang stylish. Material berkualitas dengan potongan nyaman.", material:"Linen Mix" },
+  { id:'prod_4',  series:"Code TPSHRL 9157",          name:"Flowcolour Cream Blouse",      price:"IDR 128.000", imgMainId:"catalog-main-4",  imgHoverId:"catalog-hover-4",  colors:[{name:"Cream",hex:"#F5F0E6"},{name:"Blue",hex:"#B8C8D8"},{name:"White",hex:"#F8F8F8"}],                   description:"Blouse dengan warna-warna lembut yang memesona. Bahan crepe bordir premium.", material:"Crepe Bordir" },
+  { id:'prod_5',  series:"Code DRJSW 00018",          name:"Flow Pearlbelt Dress",         price:"IDR 240.000", imgMainId:"catalog-main-5",  imgHoverId:"catalog-hover-5",  colors:[{name:"Cream",hex:"#F2EDE3"},{name:"Black",hex:"#2B2B2B"}],                                               description:"Dress elegant dengan pearl belt yang menjadi statement piece.", material:"Crepe Premium" },
+  { id:'prod_6',  series:"Code DRYRI 9300",           name:"Twocolors Bordir Tunic",       price:"IDR 195.000", imgMainId:"catalog-main-6",  imgHoverId:"catalog-hover-6",  colors:[{name:"Cream",hex:"#F0EBE0"},{name:"Brown",hex:"#7B5544"}],                                               description:"Tunik dua warna bordir yang memadukan keindahan pattern dengan kenyamanan bahan.", material:"Crepe Bordir" },
+  { id:'prod_7',  series:"Code DRGNT 00137",          name:"Flow Pattern Dress",           price:"IDR 185.000", imgMainId:"catalog-main-7",  imgHoverId:"catalog-hover-7",  colors:[{name:"Brown",hex:"#6B4C3A"},{name:"Khaki",hex:"#B5A07A"},{name:"Cream",hex:"#F0EBE0"}],                  description:"Dress dengan pattern bordir bunga yang cantik dan detail ruffled shoulder.", material:"Crepe Bordir" },
+  { id:'prod_8',  series:"Code TPBAP 3178",           name:"Nudes Vinesbordir Tunic",      price:"IDR 146.000", imgMainId:"catalog-main-8",  imgHoverId:"catalog-hover-8",  colors:[{name:"Nude",hex:"#D4B89A"},{name:"Sage",hex:"#9FAF97"}],                                                description:"Tunik dengan bordir vines yang natural dan elegan.", material:"Crepe Bordir" },
+  { id:'prod_9',  series:"Code TPMGR 00020",          name:"Flowlace Shirt",               price:"IDR 149.000", imgMainId:"catalog-main-9",  imgHoverId:"catalog-hover-9",  colors:[{name:"Cream",hex:"#F0EBE0"},{name:"Black",hex:"#2A2A2A"},{name:"Brown",hex:"#7B5544"},{name:"Navy",hex:"#374060"}], description:"Kemeja dengan detail lace yang cantik dan feminine.", material:"Linen Premium" },
+  { id:'prod_10', series:"Code TVAVM 5069",           name:"Brukat Skirt",                 price:"IDR 139.000", imgMainId:"catalog-main-10", imgHoverId:"catalog-hover-10", colors:[{name:"Navy",hex:"#374060"},{name:"Black",hex:"#2A2A2A"}],                                                description:"Rok brukat elegan dengan siluet flowy yang feminin.", material:"Brukat" },
+  { id:'prod_11', series:"Code DRYR 2979",            name:"Semiouter Flowdress",          price:"IDR 215.000", imgMainId:"catalog-main-11", imgHoverId:"catalog-hover-11", colors:[{name:"Cream",hex:"#F0EBE0"},{name:"Brown",hex:"#7B5544"},{name:"Black",hex:"#2A2A2A"}],                   description:"Semi outer flow dress yang serbaguna dan stylish.", material:"Chiffon Premium" },
+];
+
+// ── STATE ──
+let currentProduct = null;
+let selectedSize    = 'All Size';
+let selectedColor   = null;
+let selectedShipping= 'JNE';
+let currentQty      = 1;
+let cart = JSON.parse(localStorage.getItem('nn_cart') || '[]');
+
+// ── CART BADGES ──
+function updateCartBadges() {
+  const total = cart.reduce((s,i) => s + i.qty, 0);
+  // Nav cart buttons
+  document.querySelectorAll('.nav-icon-btn[aria-label="Cart"]').forEach(btn => {
+    btn.style.position = 'relative';
+    let badge = btn.querySelector('.cart-badge');
+    if (total > 0) {
+      if (!badge) { badge = document.createElement('span'); badge.className='cart-badge'; badge.style.cssText='position:absolute;top:0;right:0;background:#B85252;color:#fff;border-radius:50%;width:16px;height:16px;font-size:9px;font-family:DM Sans,sans-serif;display:flex;align-items:center;justify-content:center;font-weight:600;pointer-events:none;'; btn.appendChild(badge); }
+      badge.textContent = total > 9 ? '9+' : total;
+    } else { if (badge) badge.remove(); }
+  });
+  // PD cart badge
+  const pdBadge = document.getElementById('pdCartBadge');
+  if (pdBadge) { pdBadge.textContent = total > 9 ? '9+' : total; pdBadge.style.display = total > 0 ? 'flex' : 'none'; }
+}
+
+function saveCart() { localStorage.setItem('nn_cart', JSON.stringify(cart)); updateCartBadges(); }
+
+// ── OPEN PRODUCT DETAIL ──
+function openProductDetail(productId) {
+  const p = PRODUCT_CATALOG.find(x => x.id === productId);
+  if (!p) return;
+  currentProduct  = p;
+  currentQty      = 1;
+  selectedSize    = 'All Size';
+  selectedShipping= 'JNE';
+  selectedColor   = p.colors && p.colors.length > 0 ? p.colors[0].name : '—';
+
+  document.getElementById('pdSeries').textContent      = p.series;
+  document.getElementById('pdName').textContent        = p.name;
+  document.getElementById('pdPrice').textContent       = p.price;
+  document.getElementById('pdDesc').textContent        = p.description;
+  document.getElementById('pdMaterialVal').textContent = p.material;
+  document.getElementById('pdQty').textContent         = '1';
+  document.getElementById('pdEmail').value             = '';
+  document.getElementById('pdToast').style.display     = 'none';
+
+  const mainImgEl  = document.getElementById(p.imgMainId);
+  const hoverImgEl = document.getElementById(p.imgHoverId);
+  const mainSrc    = mainImgEl  ? mainImgEl.src  : '';
+  const hoverSrc   = hoverImgEl ? hoverImgEl.src : '';
+
+  document.getElementById('pdImg1').src      = mainSrc;
+  document.getElementById('pdThumbImg1').src = mainSrc;
+  document.getElementById('pdThumbImg2').src = hoverSrc;
+  document.getElementById('pdThumb1').style.border = '2px solid #111';
+  document.getElementById('pdThumb2').style.border = '2px solid transparent';
+
+  document.getElementById('pdThumb1').onclick = () => {
+    document.getElementById('pdImg1').src = mainSrc;
+    document.getElementById('pdThumb1').style.border = '2px solid #111';
+    document.getElementById('pdThumb2').style.border = '2px solid transparent';
+  };
+  document.getElementById('pdThumb2').onclick = () => {
+    document.getElementById('pdImg1').src = hoverSrc;
+    document.getElementById('pdThumb2').style.border = '2px solid #111';
+    document.getElementById('pdThumb1').style.border = '2px solid transparent';
+  };
+
+  // Colors
+  const colorsEl     = document.getElementById('pdColors');
+  const colorSection = document.getElementById('pdColorSection');
+  if (!p.colors || p.colors.length <= 1) {
+    if (colorSection) colorSection.style.display = 'none';
+  } else {
+    if (colorSection) colorSection.style.display = 'block';
+    colorsEl.innerHTML = p.colors.map((c, i) => {
+      const isFirst   = i === 0;
+      const lightHexes = ['#F5F0E6','#F8F8F8','#F5F0E8','#F0EBE0','#F2EDE3','#F0EDE4','#EDE8DC','#F5F0E6'];
+      const needBorder = lightHexes.includes(c.hex);
+      return `<button onclick="selectColor(this,'${c.name}')" title="${c.name}" data-color="${c.name}"
+        style="width:32px;height:32px;border-radius:50%;background:${c.hex};
+               border:${isFirst ? '3px solid #111' : '2px solid '+(needBorder?'#ddd':'transparent')};
+               outline:${isFirst ? '2px solid rgba(0,0,0,0.15)' : 'none'};outline-offset:2px;
+               cursor:pointer;transition:all 0.2s;box-shadow:0 1px 6px rgba(0,0,0,0.14);"></button>`;
+    }).join('');
+  }
+
+  const page = document.getElementById('productDetailPage');
+  page.style.display = 'block';
+  page.scrollTop = 0;
+  document.body.style.overflow = 'hidden';
+  updateCartBadges();
+}
+
+function closeProductDetail() {
+  document.getElementById('productDetailPage').style.display = 'none';
+  document.body.style.overflow = '';
+}
+
+function selectColor(btn, color) {
+  selectedColor = color;
+  document.querySelectorAll('#pdColors button').forEach(b => {
+    b.style.border = '2px solid transparent'; b.style.outline = 'none';
+  });
+  btn.style.border = '3px solid #111';
+  btn.style.outline = '2px solid rgba(0,0,0,0.15)';
+  btn.style.outlineOffset = '2px';
+}
+
+function changeQty(delta) {
+  currentQty = Math.max(1, currentQty + delta);
+  document.getElementById('pdQty').textContent = currentQty;
+}
+
+function showToast(msg, ok) {
+  const t = document.getElementById('pdToast');
+  t.textContent = msg;
+  t.style.display = 'block';
+  t.style.background = ok !== false ? '#f0faf4' : '#fff5f5';
+  t.style.borderColor = ok !== false ? '#b2dfcb' : '#f5c6c6';
+  t.style.color       = ok !== false ? '#2d7a4f' : '#b00020';
+  setTimeout(() => t.style.display = 'none', 3000);
+}
+
+function addToCart() {
+  if (!currentProduct) return;
+  const existing = cart.find(x => x.id === currentProduct.id && x.color === selectedColor);
+  if (existing) { existing.qty += currentQty; }
+  else {
+    const imgEl = document.getElementById(currentProduct.imgMainId);
+    cart.push({ id:currentProduct.id, name:currentProduct.name, series:currentProduct.series,
+                price:currentProduct.price, size:'All Size', color:selectedColor,
+                shipping:selectedShipping, qty:currentQty, img:imgEl ? imgEl.src : '', checked:true });
+  }
+  saveCart();
+  showToast('✓ Ditambahkan ke keranjang!');
+}
+
+function buyNow() {
+  if (!currentProduct) return;
+  const imgEl = document.getElementById(currentProduct.imgMainId);
+  const item  = [{ id:currentProduct.id, name:currentProduct.name, series:currentProduct.series,
+                   price:currentProduct.price, size:'All Size', color:selectedColor,
+                   shipping:selectedShipping, qty:currentQty, img:imgEl ? imgEl.src : '' }];
+  openCheckoutPageDirect(item);
+}
+
+// ── CART PAGE ──
+function openCartPage() {
+  cart.forEach(item => { if (item.checked === undefined) item.checked = true; });
+  window._activeVoucher = null;
+  const vl = document.getElementById('voucherLabel');
+  if (vl) { vl.textContent = 'Pilih Voucher'; vl.style.color = '#D84040'; }
+  const vp = document.getElementById('voucherPanel');
+  if (vp) vp.style.display = 'none';
+  renderCart();
+  document.getElementById('cartPage').style.display = 'block';
+  document.getElementById('cartPage').scrollTop = 0;
+  document.body.style.overflow = 'hidden';
+}
+
+function closeCartPage() {
+  document.getElementById('cartPage').style.display = 'none';
+  document.body.style.overflow = '';
+}
+
+// ── WISHLIST ──
+let wishlist = JSON.parse(localStorage.getItem('nn_wishlist') || '[]');
+function saveWishlist() { localStorage.setItem('nn_wishlist', JSON.stringify(wishlist)); updateWishlistBadge(); }
+function updateWishlistBadge() {
+  document.querySelectorAll('#navWishlistBtn').forEach(btn => {
+    let badge = btn.querySelector('.wishlist-badge');
+    if (wishlist.length > 0) {
+      if (!badge) { badge = document.createElement('span'); badge.className='wishlist-badge'; badge.style.cssText='position:absolute;top:2px;right:2px;width:16px;height:16px;background:#B85252;color:#fff;border-radius:50%;font-size:9px;font-family:DM Sans,sans-serif;display:flex;align-items:center;justify-content:center;font-weight:600;pointer-events:none;'; btn.appendChild(badge); }
+      badge.textContent = wishlist.length > 9 ? '9+' : wishlist.length;
+    } else { if (badge) badge.remove(); }
+  });
+}
+function toggleWishlist(btn) {
+  const id = btn.dataset.id, name = btn.dataset.name, series = btn.dataset.series, price = btn.dataset.price;
+  const card  = btn.closest('.product-card');
+  const imgEl = card ? card.querySelector('.img-main') : null;
+  const imgSrc = imgEl ? imgEl.src : '';
+  const existIdx = wishlist.findIndex(p => p.id === id);
+  const allBtns  = document.querySelectorAll(`.wishlist-btn[data-id="${id}"]`);
+  if (existIdx > -1) { wishlist.splice(existIdx, 1); allBtns.forEach(b => b.classList.remove('wishlisted')); }
+  else {
+    wishlist.push({ id, name, series, price, img: imgSrc });
+    allBtns.forEach(b => { b.classList.add('wishlisted'); b.style.transform='scale(1.3)'; setTimeout(()=>b.style.transform='',250); });
+  }
+  saveWishlist();
+  if (document.getElementById('wishlistPage') && document.getElementById('wishlistPage').style.display !== 'none') renderWishlistPage();
+}
+function openWishlistPage()  { restoreWishlistBtnStates(); renderWishlistPage(); document.getElementById('wishlistPage').style.display='block'; document.body.style.overflow='hidden'; }
+function closeWishlistPage() { document.getElementById('wishlistPage').style.display='none'; document.body.style.overflow=''; }
+function removeFromWishlist(id) { const idx=wishlist.findIndex(p=>p.id===id); if(idx>-1) wishlist.splice(idx,1); saveWishlist(); document.querySelectorAll(`.wishlist-btn[data-id="${id}"]`).forEach(b=>b.classList.remove('wishlisted')); renderWishlistPage(); }
+function renderWishlistPage() {
+  const grid=document.getElementById('wishlistGrid'), empty=document.getElementById('wishlistEmpty'), count=document.getElementById('wishlistCount');
+  if(count) count.textContent = wishlist.length > 0 ? `(${wishlist.length} item)` : '';
+  if(wishlist.length===0){if(empty)empty.style.display='block';if(grid)grid.style.display='none';return;}
+  if(empty)empty.style.display='none';if(grid)grid.style.display='grid';
+  grid.innerHTML=wishlist.map(p=>`<div class="product-card" style="cursor:default;"><div class="product-img-wrap" style="position:relative;"><img src="${p.img}" alt="${p.name}" style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover;object-position:center top;border-radius:12px;"><button class="wishlist-remove-btn" onclick="removeFromWishlist('${p.id}')" title="Hapus"><svg viewBox="0 0 24 24" width="12" height="12" fill="none" stroke="#333" stroke-width="2.5" stroke-linecap="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg></button></div><div class="product-info"><p class="product-series">${p.series}</p><p class="product-name">${p.name}</p>${p.price&&p.price!=='—'?`<p class="product-price">${p.price}</p>`:''}</div></div>`).join('');
+}
+function restoreWishlistBtnStates() { wishlist.forEach(p=>{document.querySelectorAll(`.wishlist-btn[data-id="${p.id}"]`).forEach(b=>b.classList.add('wishlisted'));}); }
+
+// ── INIT ──
+document.addEventListener('DOMContentLoaded', () => {
+  updateCartBadges();
+  updateWishlistBadge();
+  restoreWishlistBtnStates();
+  // Wire nav cart buttons
+  document.querySelectorAll('.nav-icon-btn[aria-label="Cart"]').forEach(btn => {
+    btn.onclick = () => openCartPage();
+    btn.style.position = 'relative';
+  });
+  // Wire nav wishlist button
+  const wlBtn = document.getElementById('navWishlistBtn');
+  if (wlBtn) wlBtn.onclick = () => openWishlistPage();
+  // Wire nav account button
+  document.querySelectorAll('.nav-icon-btn[aria-label="Account"]').forEach(btn => {
+    btn.onclick = () => openAccountPage();
+    btn.style.position = 'relative';
+    btn.style.cursor   = 'pointer';
+  });
+  updateAccountBadge();
+});
+</script>
+
+
+<script>
+// ── RENDER CART ──
+function renderCart() {
+  const itemsWrap = document.getElementById('cartItems');
+  const emptyEl   = document.getElementById('cartEmpty');
+  const summaryEl = document.getElementById('cartSummary');
+  const countEl   = document.getElementById('cartItemCount');
+  const listEl    = document.getElementById('cartProductList');
+  if (!listEl) return;
+
+  const total = cart.reduce((s,i) => s + i.qty, 0);
+  if (countEl) countEl.textContent = total > 0 ? `(${total} item)` : '';
+
+  if (cart.length === 0) {
+    if(emptyEl) emptyEl.style.display='block';
+    if(itemsWrap) itemsWrap.style.display='none';
+    if(summaryEl) summaryEl.style.display='none';
+    return;
+  }
+  if(emptyEl) emptyEl.style.display='none';
+  if(itemsWrap) itemsWrap.style.display='flex';
+  if(summaryEl) summaryEl.style.display='block';
+
+  listEl.innerHTML = cart.map((item, idx) => `
+    <div class="cart-item" data-idx="${idx}" style="padding:14px 16px;border-bottom:1px solid #f8f8f8;display:flex;gap:12px;align-items:flex-start;">
+      <input type="checkbox" class="cart-item-check" data-idx="${idx}" ${item.checked!==false?'checked':''} onchange="updateCartSelection()" style="margin-top:32px;width:18px;height:18px;flex-shrink:0;accent-color:#D84040;cursor:pointer;">
+      <div style="width:88px;min-width:88px;aspect-ratio:3/4;border-radius:8px;overflow:hidden;background:#f5f5f5;cursor:pointer;" onclick="openProductDetail('${item.id}')">
+        <img src="${item.img}" style="width:100%;height:100%;object-fit:cover;object-position:center top;">
+      </div>
+      <div style="flex:1;min-width:0;">
+        <p style="font-family:'DM Sans',sans-serif;font-size:9px;letter-spacing:0.15em;text-transform:uppercase;color:#aaa;margin:0 0 2px;">${item.series}</p>
+        <p style="font-family:'Playfair Display',serif;font-size:14px;color:#111;margin:0 0 6px;line-height:1.3;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;">${item.name}</p>
+        <div style="display:inline-flex;align-items:center;gap:5px;background:#f5f5f5;border-radius:4px;padding:3px 8px;margin-bottom:8px;">
+          <span style="font-family:'DM Sans',sans-serif;font-size:10px;color:#666;">All Size · ${item.color||'—'}</span>
+        </div>
+        <div style="display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:8px;">
+          <span style="font-family:'DM Sans',sans-serif;font-size:15px;font-weight:700;color:#D84040;">${item.price}</span>
+          <div style="display:flex;align-items:center;gap:8px;">
+            <button onclick="removeCartItem(${idx})" style="background:none;border:none;cursor:pointer;color:#ccc;padding:4px;transition:color 0.2s;" onmouseover="this.style.color='#D84040'" onmouseout="this.style.color='#ccc'">
+              <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><polyline points="3 6 5 6 21 6"/><path d="M19 6l-1 14a2 2 0 0 1-2 2H8a2 2 0 0 1-2-2L5 6"/><path d="M10 11v6M14 11v6"/><path d="M9 6V4h6v2"/></svg>
+            </button>
+            <div style="display:flex;align-items:center;border:1.5px solid #eee;border-radius:8px;overflow:hidden;">
+              <button onclick="updateCartQty(${idx},-1)" style="background:#fafafa;border:none;width:32px;height:32px;cursor:pointer;font-size:16px;color:#555;display:flex;align-items:center;justify-content:center;" onmouseover="this.style.background='#f0f0f0'" onmouseout="this.style.background='#fafafa'">−</button>
+              <span style="font-family:'DM Sans',sans-serif;font-size:13px;font-weight:600;min-width:28px;text-align:center;color:#111;">${item.qty}</span>
+              <button onclick="updateCartQty(${idx},1)" style="background:#fafafa;border:none;width:32px;height:32px;cursor:pointer;font-size:16px;color:#555;display:flex;align-items:center;justify-content:center;" onmouseover="this.style.background='#f0f0f0'" onmouseout="this.style.background='#fafafa'">+</button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  `).join('');
+
+  updateCartSelection();
+}
+
+function updateCartSelection() {
+  const checks = document.querySelectorAll('.cart-item-check');
+  let selected = 0, subtotal = 0;
+  checks.forEach(cb => {
+    const idx = parseInt(cb.dataset.idx);
+    if (cart[idx]) cart[idx].checked = cb.checked;
+    if (cb.checked && cart[idx]) {
+      selected++;
+      subtotal += parseInt((cart[idx].price||'0').replace(/[^0-9]/g,'')) * cart[idx].qty;
+    }
+  });
+  const allCheck = document.getElementById('selectAllCart');
+  if (allCheck) allCheck.checked = selected === cart.length && cart.length > 0;
+  const selCount = document.getElementById('selectedCount');
+  if (selCount) selCount.textContent = selected;
+
+  let discount = 0;
+  if (window._activeVoucher === '10%') discount = Math.round(subtotal * 0.1);
+  else if (window._activeVoucher === 'IDR 15.000') discount = 15000;
+
+  const discRow = document.getElementById('discountRow');
+  if (discRow) discRow.style.display = discount > 0 ? 'flex' : 'none';
+  const discAmt = document.getElementById('discountAmount');
+  if (discAmt) discAmt.textContent = '− IDR ' + discount.toLocaleString('id-ID');
+
+  const total = Math.max(0, subtotal - discount);
+  const sub = document.getElementById('cartSubtotal');
+  const tot = document.getElementById('cartTotal');
+  if (sub) sub.textContent = 'IDR ' + subtotal.toLocaleString('id-ID');
+  if (tot) tot.textContent = 'IDR ' + total.toLocaleString('id-ID');
+  saveCart();
+}
+
+function toggleSelectAll(checked) {
+  document.querySelectorAll('.cart-item-check').forEach(cb => { cb.checked = checked; });
+  updateCartSelection();
+}
+function deleteSelected() { cart = cart.filter(i => i.checked === false); saveCart(); renderCart(); }
+function toggleVoucher() { const p=document.getElementById('voucherPanel'); if(p) p.style.display=p.style.display==='none'?'block':'none'; }
+function applyVoucher(btn, code, label) {
+  window._activeVoucher = label;
+  const vl = document.getElementById('voucherLabel');
+  if(vl){ vl.textContent='✓ '+code; vl.style.color='#2d7a4f'; }
+  const dl = document.getElementById('discountLabel');
+  if(dl) dl.textContent = 'Voucher '+code;
+  document.querySelectorAll('.voucher-chip').forEach(b=>{b.style.background='#fff5f5';b.style.color='#D84040';b.style.border='1.5px dashed #D84040';});
+  btn.style.background='#D84040'; btn.style.color='#fff'; btn.style.border='1.5px solid #D84040';
+  const vp = document.getElementById('voucherPanel'); if(vp) vp.style.display='none';
+  updateCartSelection();
+}
+let _cartShipping = 'JNE Regular';
+function selectCartShipping(val, el) { _cartShipping = val; document.querySelectorAll('#cship-jne,#cship-jnt,#cship-pickup').forEach(l=>l.style.borderColor='#f0f0f0'); if(el) el.style.borderColor='#D84040'; }
+function removeCartItem(idx) { cart.splice(idx,1); saveCart(); renderCart(); }
+function updateCartQty(idx, delta) { cart[idx].qty = Math.max(1, cart[idx].qty+delta); saveCart(); renderCart(); }
+function proceedCheckout() {
+  const selected = cart.filter(i => i.checked !== false);
+  if (selected.length === 0) { alert('Pilih produk yang ingin di-checkout terlebih dahulu.'); return; }
+  window._checkoutItems = selected;
+  openCheckoutPageDirect(selected);
+}
+</script>
+
+<script>
+// ─── CUSTOM CURSOR ───
+const cursor = document.getElementById('cursor');
+const cursorRing = document.getElementById('cursorRing');
+let mouseX = 0, mouseY = 0, ringX = 0, ringY = 0;
+document.addEventListener('mousemove', e => {
+  mouseX = e.clientX; mouseY = e.clientY;
+  cursor.style.left = mouseX + 'px';
+  cursor.style.top = mouseY + 'px';
+});
+function animateRing() {
+  ringX += (mouseX - ringX) * 0.12;
+  ringY += (mouseY - ringY) * 0.12;
+  cursorRing.style.left = ringX + 'px';
+  cursorRing.style.top = ringY + 'px';
+  requestAnimationFrame(animateRing);
+}
+animateRing();
+document.querySelectorAll('a, button, .product-card, .store-cell').forEach(el => {
+  el.addEventListener('mouseenter', () => {
+    cursor.style.width = '16px';
+    cursor.style.height = '16px';
+    cursor.style.background = '#000';
+    cursorRing.style.width = '52px';
+    cursorRing.style.height = '52px';
+  });
+  el.addEventListener('mouseleave', () => {
+    cursor.style.width = '8px';
+    cursor.style.height = '8px';
+    cursorRing.style.width = '36px';
+    cursorRing.style.height = '36px';
+  });
+});
+
+// ─── NAVBAR SCROLL ───
+const navbar = document.getElementById('navbar');
+function updateNavbar() {
+  if (window.scrollY > 10) navbar.classList.add('scrolled');
+  else navbar.classList.remove('scrolled');
+}
+window.addEventListener('scroll', updateNavbar, { passive: true });
+updateNavbar(); // run on load
+
+// ─── MOBILE MENU ───
+const hamburgerBtn = document.getElementById('hamburgerBtn');
+const mobileMenu = document.getElementById('mobileMenu');
+const mobileClose = document.getElementById('mobileClose');
+const mobileOverlay = document.getElementById('mobileOverlay');
+
+function openMobileMenu() {
+  mobileMenu.style.display = 'flex';
+  requestAnimationFrame(() => {
+    mobileMenu.classList.add('open');
+    mobileOverlay.style.display = 'block';
+    requestAnimationFrame(() => mobileOverlay.classList.add('visible'));
+  });
+  document.body.style.overflow = 'hidden';
+}
+
+function closeMobileMenu() {
+  mobileMenu.classList.remove('open');
+  mobileOverlay.classList.remove('visible');
+  document.body.style.overflow = '';
+  setTimeout(() => {
+    mobileMenu.style.display = 'none';
+    mobileOverlay.style.display = 'none';
+  }, 350);
+}
+
+hamburgerBtn.addEventListener('click', openMobileMenu);
+mobileClose.addEventListener('click', closeMobileMenu);
+mobileOverlay.addEventListener('click', closeMobileMenu);
+
+// Swipe to close (swipe left)
+let touchStartX = 0;
+mobileMenu.addEventListener('touchstart', e => { touchStartX = e.touches[0].clientX; }, { passive: true });
+mobileMenu.addEventListener('touchend', e => {
+  const diff = touchStartX - e.changedTouches[0].clientX;
+  if (diff > 60) closeMobileMenu();
+}, { passive: true });
+
+// ─── SCROLL REVEAL ───
+const revealEls = document.querySelectorAll('.reveal, .reveal-left, .reveal-right');
+const revealObserver = new IntersectionObserver((entries) => {
+  entries.forEach(e => {
+    if (e.isIntersecting) {
+      e.target.classList.add('visible');
+    }
+  });
+}, { threshold: 0.1, rootMargin: '0px 0px -48px 0px' });
+revealEls.forEach(el => revealObserver.observe(el));
+
+// ─── PRODUCT IMAGE SWAP (hover) ───
+// Already handled via CSS img-main / img-hover classes
+
+// ─── PARALLAX HERO SUBTLE ───
+window.addEventListener('scroll', () => {
+  const scrollY = window.scrollY;
+  const hero = document.getElementById('hero');
+  if (hero) {
+    const heroContent = hero.querySelector('.hero-content');
+    if (heroContent) heroContent.style.transform = `translateY(${scrollY * 0.15}px)`;
+  }
+});
+
+// ─── SMOOTH STORE CELL STAGGER ON SCROLL ───
+const storeCells = document.querySelectorAll('.store-cell');
+const storeObserver = new IntersectionObserver((entries) => {
+  if (entries[0].isIntersecting) {
+    storeCells.forEach((cell, i) => {
+      setTimeout(() => {
+        cell.style.opacity = '1';
+        cell.style.transform = 'translateY(0)';
+      }, i * 60);
+    });
+  }
+}, { threshold: 0.05 });
+storeCells.forEach(cell => {
+  cell.style.opacity = '0';
+  cell.style.transform = 'translateY(20px)';
+  cell.style.transition = 'opacity 0.6s ease, transform 0.6s ease';
+});
+if (storeCells[0]) storeObserver.observe(storeCells[0]);
+
+// ─── PRODUCT CARD STAGGER ───
+const productCards = document.querySelectorAll('.product-card');
+const cardObserver = new IntersectionObserver((entries) => {
+  entries.forEach(e => {
+    if (e.isIntersecting) {
+      e.target.style.opacity = '1';
+      e.target.style.transform = 'translateY(0)';
+    }
+  });
+}, { threshold: 0.05 });
+productCards.forEach((card, i) => {
+  if (!card.style.transitionDelay) {
+    card.style.transitionDelay = (i % 4) * 0.08 + 's';
+  }
+  card.style.opacity = '0';
+  card.style.transform = 'translateY(24px)';
+  card.style.transition = 'opacity 0.7s ease, transform 0.7s ease, box-shadow 0.4s ease';
+  cardObserver.observe(card);
+});
+
+// ─── NEWSLETTER FORM ───
+const newsletterForm = document.querySelector('.newsletter-form');
+if (newsletterForm) {
+  newsletterForm.addEventListener('submit', e => {
+    e.preventDefault();
+    const btn = newsletterForm.querySelector('button');
+    btn.textContent = '✓ Subscribed';
+    setTimeout(() => { btn.textContent = 'Subscribe'; }, 3000);
+  });
+}
+
+function openNewArrivals() {
+  const page = document.getElementById('newArrivalsPage');
+  page.style.display = 'block';
+  document.body.style.overflow = 'hidden';
+  setTimeout(() => {
+    page.querySelectorAll('.reveal').forEach((el, i) => {
+      setTimeout(() => el.classList.add('visible'), i * 80);
+    });
+  }, 100);
+}
+function closeNewArrivals() {
+  const page = document.getElementById('newArrivalsPage');
+  page.style.display = 'none';
+  document.body.style.overflow = '';
+}
+document.addEventListener('keydown', e => {
+  if (e.key === 'Escape') closeNewArrivals();
+});
+</script>
+
+<script>
+function smoothScroll(id) {
+  // Close mobile menu if open
+  const mobileMenu = document.getElementById('mobileMenu');
+  if (mobileMenu) mobileMenu.classList.remove('open');
+  document.body.style.overflow = '';
+
+  const el = document.getElementById(id);
+  if (!el) return;
+  const navHeight = document.getElementById('navbar')?.offsetHeight || 72;
+  const top = el.getBoundingClientRect().top + window.scrollY - navHeight - 16;
+  window.scrollTo({ top, behavior: 'smooth' });
+}
+</script>
+
+<!-- WISHLIST PAGE -->
+<div id="wishlistPage" style="display:none;position:fixed;inset:0;z-index:9999;background:#fff;overflow-y:auto;">
+  <header style="position:sticky;top:0;background:#fff;z-index:10;border-bottom:1px solid #eee;padding:0 clamp(12px,4vw,48px);">
+    <div style="max-width:1440px;margin:0 auto;display:flex;align-items:center;justify-content:space-between;height:72px;">
+      <div style="display:flex;align-items:center;gap:12px;">
+        <span style="font-family:'Playfair Display',serif;font-size:20px;font-weight:500;letter-spacing:0.04em;">Ninetynine</span>
+        <span style="font-family:'DM Sans',sans-serif;font-size:10px;letter-spacing:0.2em;text-transform:uppercase;color:#888;">/ Wishlist</span>
+      </div>
+      <button onclick="closeWishlistPage()" style="background:none;border:1px solid #ddd;border-radius:50%;width:36px;height:36px;cursor:pointer;display:flex;align-items:center;justify-content:center;font-size:18px;color:#333;transition:all 0.2s;" onmouseover="this.style.background='#000';this.style.color='#fff'" onmouseout="this.style.background='none';this.style.color='#333'">×</button>
+    </div>
+  </header>
+  <div style="max-width:1440px;margin:0 auto;padding:40px clamp(12px,4vw,48px) 80px;">
+    <div style="margin-bottom:32px;display:flex;align-items:baseline;gap:12px;">
+      <h1 style="font-family:'Playfair Display',serif;font-size:clamp(24px,3.5vw,40px);font-weight:500;margin:0;">My Wishlist</h1>
+      <span id="wishlistCount" style="font-family:'DM Sans',sans-serif;font-size:11px;color:#888;letter-spacing:0.1em;"></span>
+    </div>
+    <div id="wishlistEmpty" style="display:none;text-align:center;padding:80px 0;">
+      <svg viewBox="0 0 24 24" width="48" height="48" fill="none" stroke="#ccc" stroke-width="1.5" style="margin-bottom:16px;"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg>
+      <p style="font-family:'DM Sans',sans-serif;color:#999;font-size:14px;margin:0 0 8px;">Wishlist kamu masih kosong</p>
+      <p style="font-family:'DM Sans',sans-serif;color:#bbb;font-size:12px;">Klik ikon ♡ pada produk untuk menyimpannya di sini</p>
+    </div>
+    <div id="wishlistGrid" class="product-grid" style="grid-template-columns:repeat(auto-fill,minmax(min(160px,calc(50% - 8px)),1fr));gap:20px 14px;"></div>
+  </div>
+</div>
+
+<style>
+/* Wishlist heart active state */
+.wishlist-btn.wishlisted svg { fill: #B85252; stroke: #B85252; }
+.wishlist-btn.wishlisted { background: rgba(184,82,82,0.08) !important; }
+
+/* Wishlist nav badge */
+#navWishlistBtn .wishlist-badge {
+  position: absolute; top: 2px; right: 2px;
+  width: 16px; height: 16px;
+  background: #B85252; color: #fff;
+  border-radius: 50%;
+  font-size: 9px; font-family: 'DM Sans', sans-serif;
+  display: flex; align-items: center; justify-content: center;
+  font-weight: 600; line-height: 1;
+  pointer-events: none;
+}
+
+/* Wishlist remove btn */
+.wishlist-remove-btn {
+  position: absolute; top: 8px; right: 8px;
+  background: rgba(255,255,255,0.9); border: none;
+  border-radius: 50%; width: 28px; height: 28px;
+  cursor: pointer; z-index: 4;
+  display: flex; align-items: center; justify-content: center;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+  transition: background 0.2s, transform 0.2s;
+}
+.wishlist-remove-btn:hover { background: #B85252; transform: scale(1.1); }
+.wishlist-remove-btn:hover svg { stroke: #fff; }
+</style>
+
+<script>
+// ─── WISHLIST SYSTEM ───
+let wishlist = JSON.parse(localStorage.getItem('nn_wishlist') || '[]');
+
+function saveWishlist() {
+  localStorage.setItem('nn_wishlist', JSON.stringify(wishlist));
+  updateWishlistBadge();
+}
+
+function updateWishlistBadge() {
+  const btn = document.getElementById('navWishlistBtn');
+  if (!btn) return;
+  let badge = btn.querySelector('.wishlist-badge');
+  if (wishlist.length > 0) {
+    if (!badge) {
+      badge = document.createElement('span');
+      badge.className = 'wishlist-badge';
+      btn.appendChild(badge);
+    }
+    badge.textContent = wishlist.length > 9 ? '9+' : wishlist.length;
+  } else {
+    if (badge) badge.remove();
+  }
+}
+
+function toggleWishlist(btn) {
+  const id     = btn.dataset.id;
+  const name   = btn.dataset.name;
+  const series = btn.dataset.series;
+  const price  = btn.dataset.price;
+
+  // Find image from nearest product card
+  const card  = btn.closest('.product-card');
+  const imgEl = card ? card.querySelector('.img-main') : null;
+  const imgSrc = imgEl ? imgEl.src : '';
+
+  const existIdx = wishlist.findIndex(p => p.id === id);
+
+  // Toggle all buttons with same id
+  const allBtns = document.querySelectorAll(`.wishlist-btn[data-id="${id}"]`);
+
+  if (existIdx > -1) {
+    wishlist.splice(existIdx, 1);
+    allBtns.forEach(b => b.classList.remove('wishlisted'));
+  } else {
+    wishlist.push({ id, name, series, price, img: imgSrc });
+    allBtns.forEach(b => b.classList.add('wishlisted'));
+    // Mini bounce animation
+    allBtns.forEach(b => {
+      b.style.transform = 'scale(1.3)';
+      setTimeout(() => b.style.transform = '', 250);
+    });
+  }
+  saveWishlist();
+  if (document.getElementById('wishlistPage').style.display !== 'none') {
+    renderWishlistPage();
+  }
+}
+
+function openWishlistPage() {
+  restoreWishlistBtnStates();
+  renderWishlistPage();
+  const page = document.getElementById('wishlistPage');
+  page.style.display = 'block';
+  document.body.style.overflow = 'hidden';
+}
+
+function closeWishlistPage() {
+  document.getElementById('wishlistPage').style.display = 'none';
+  document.body.style.overflow = '';
+}
+
+function removeFromWishlist(id) {
+  const idx = wishlist.findIndex(p => p.id === id);
+  if (idx > -1) wishlist.splice(idx, 1);
+  saveWishlist();
+  // Update buttons
+  document.querySelectorAll(`.wishlist-btn[data-id="${id}"]`).forEach(b => b.classList.remove('wishlisted'));
+  renderWishlistPage();
+}
+
+function renderWishlistPage() {
+  const grid  = document.getElementById('wishlistGrid');
+  const empty = document.getElementById('wishlistEmpty');
+  const count = document.getElementById('wishlistCount');
+
+  count.textContent = wishlist.length > 0 ? `(${wishlist.length} item)` : '';
+
+  if (wishlist.length === 0) {
+    empty.style.display = 'block';
+    grid.style.display  = 'none';
+    return;
+  }
+  empty.style.display = 'none';
+  grid.style.display  = 'grid';
+
+  grid.innerHTML = wishlist.map(p => `
+    <div class="product-card" style="cursor:default;">
+      <div class="product-img-wrap" style="position:relative;">
+        <img src="${p.img}" alt="${p.name}" style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover;object-position:center top;border-radius:12px;">
+        <button class="wishlist-remove-btn" onclick="removeFromWishlist('${p.id}')" title="Hapus dari wishlist">
+          <svg viewBox="0 0 24 24" width="12" height="12" fill="none" stroke="#333" stroke-width="2.5" stroke-linecap="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+        </button>
+      </div>
+      <div class="product-info">
+        <p class="product-series">${p.series}</p>
+        <p class="product-name">${p.name}</p>
+        ${p.price && p.price !== '—' ? `<p class="product-price">${p.price}</p>` : ''}
+      </div>
+    </div>
+  `).join('');
+}
+
+function restoreWishlistBtnStates() {
+  wishlist.forEach(p => {
+    document.querySelectorAll(`.wishlist-btn[data-id="${p.id}"]`).forEach(b => b.classList.add('wishlisted'));
+  });
+}
+
+// Init on page load
+document.addEventListener('DOMContentLoaded', () => {
+  restoreWishlistBtnStates();
+  updateWishlistBadge();
+});
+
+// Close wishlist on Escape
+document.addEventListener('keydown', e => {
+  if (e.key === 'Escape' && document.getElementById('wishlistPage').style.display !== 'none') {
+    closeWishlistPage();
+  }
+});
+</script>
+
+
+<script>
+function openAllProductsPage() {
+  // Reuse existing New Arrivals page as All Products page
+  openNewArrivals();
+}
+</script>
+
+<!-- LOOKS PAGE -->
+<div id="looksPage" style="display:none;position:fixed;inset:0;z-index:9999;background:#fff;overflow-y:auto;">
+  <header style="position:sticky;top:0;background:#fff;z-index:10;border-bottom:1px solid #eee;padding:0 clamp(12px,4vw,48px);">
+    <div style="max-width:1440px;margin:0 auto;display:flex;align-items:center;justify-content:space-between;height:72px;">
+      <div style="display:flex;align-items:center;gap:12px;">
+        <span style="font-family:'Playfair Display',serif;font-size:20px;font-weight:500;letter-spacing:0.04em;">Ninetynine</span>
+        <span style="font-family:'DM Sans',sans-serif;font-size:10px;letter-spacing:0.2em;text-transform:uppercase;color:#888;">/ Looks</span>
+      </div>
+      <button onclick="closeLooksPage()" style="background:none;border:1px solid #ddd;border-radius:50%;width:36px;height:36px;cursor:pointer;display:flex;align-items:center;justify-content:center;font-size:18px;color:#333;transition:all 0.2s;" onmouseover="this.style.background='#000';this.style.color='#fff'" onmouseout="this.style.background='none';this.style.color='#333'">×</button>
+    </div>
+  </header>
+  <div style="max-width:1440px;margin:0 auto;padding:48px clamp(12px,4vw,48px) 80px;">
+    <div style="margin-bottom:40px;">
+      <span style="font-family:'DM Sans',sans-serif;font-size:10px;letter-spacing:0.25em;text-transform:uppercase;color:#888;display:block;margin-bottom:10px;">Style Inspiration</span>
+      <h1 style="font-family:'Playfair Display',serif;font-size:clamp(28px,4vw,48px);font-weight:500;color:#000;margin:0;">Get Your Look</h1>
+    </div>
+    <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(min(260px,calc(50% - 8px)),1fr));gap:24px 20px;">
+
+      <!-- Look 1 -->
+      <div style="cursor:pointer;transition:transform 0.3s;" onmouseover="this.style.transform='translateY(-4px)'" onmouseout="this.style.transform='translateY(0)'">
+        <div style="background:#F6F1E9;border-radius:16px;aspect-ratio:3/4;display:flex;align-items:center;justify-content:center;margin-bottom:16px;position:relative;overflow:hidden;">
+          <span style="font-family:'Playfair Display',serif;font-size:48px;font-weight:400;color:rgba(0,0,0,0.12);user-select:none;">1</span>
+          <div style="position:absolute;bottom:16px;left:16px;right:16px;background:rgba(255,255,255,0.85);backdrop-filter:blur(8px);border-radius:8px;padding:10px 14px;">
+            <p style="font-family:'DM Sans',sans-serif;font-size:9px;letter-spacing:0.2em;text-transform:uppercase;color:#999;margin:0 0 2px;">Style Guide</p>
+            <p style="font-family:'Playfair Display',serif;font-size:16px;font-weight:400;color:#111;margin:0;">Look 1</p>
+          </div>
+        </div>
+      </div>
+
+      <!-- Look 2 -->
+      <div style="cursor:pointer;transition:transform 0.3s;" onmouseover="this.style.transform='translateY(-4px)'" onmouseout="this.style.transform='translateY(0)'">
+        <div style="background:#EDE8E2;border-radius:16px;aspect-ratio:3/4;display:flex;align-items:center;justify-content:center;margin-bottom:16px;position:relative;overflow:hidden;">
+          <span style="font-family:'Playfair Display',serif;font-size:48px;font-weight:400;color:rgba(0,0,0,0.12);user-select:none;">2</span>
+          <div style="position:absolute;bottom:16px;left:16px;right:16px;background:rgba(255,255,255,0.85);backdrop-filter:blur(8px);border-radius:8px;padding:10px 14px;">
+            <p style="font-family:'DM Sans',sans-serif;font-size:9px;letter-spacing:0.2em;text-transform:uppercase;color:#999;margin:0 0 2px;">Style Guide</p>
+            <p style="font-family:'Playfair Display',serif;font-size:16px;font-weight:400;color:#111;margin:0;">Look 2</p>
+          </div>
+        </div>
+      </div>
+
+      <!-- Look 3 -->
+      <div style="cursor:pointer;transition:transform 0.3s;" onmouseover="this.style.transform='translateY(-4px)'" onmouseout="this.style.transform='translateY(0)'">
+        <div style="background:#E8E4DF;border-radius:16px;aspect-ratio:3/4;display:flex;align-items:center;justify-content:center;margin-bottom:16px;position:relative;overflow:hidden;">
+          <span style="font-family:'Playfair Display',serif;font-size:48px;font-weight:400;color:rgba(0,0,0,0.12);user-select:none;">3</span>
+          <div style="position:absolute;bottom:16px;left:16px;right:16px;background:rgba(255,255,255,0.85);backdrop-filter:blur(8px);border-radius:8px;padding:10px 14px;">
+            <p style="font-family:'DM Sans',sans-serif;font-size:9px;letter-spacing:0.2em;text-transform:uppercase;color:#999;margin:0 0 2px;">Style Guide</p>
+            <p style="font-family:'Playfair Display',serif;font-size:16px;font-weight:400;color:#111;margin:0;">Look 3</p>
+          </div>
+        </div>
+      </div>
+
+      <!-- Look 4 -->
+      <div style="cursor:pointer;transition:transform 0.3s;" onmouseover="this.style.transform='translateY(-4px)'" onmouseout="this.style.transform='translateY(0)'">
+        <div style="background:#E2DDD7;border-radius:16px;aspect-ratio:3/4;display:flex;align-items:center;justify-content:center;margin-bottom:16px;position:relative;overflow:hidden;">
+          <span style="font-family:'Playfair Display',serif;font-size:48px;font-weight:400;color:rgba(0,0,0,0.12);user-select:none;">4</span>
+          <div style="position:absolute;bottom:16px;left:16px;right:16px;background:rgba(255,255,255,0.85);backdrop-filter:blur(8px);border-radius:8px;padding:10px 14px;">
+            <p style="font-family:'DM Sans',sans-serif;font-size:9px;letter-spacing:0.2em;text-transform:uppercase;color:#999;margin:0 0 2px;">Style Guide</p>
+            <p style="font-family:'Playfair Display',serif;font-size:16px;font-weight:400;color:#111;margin:0;">Look 4</p>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</div>
+
+<script>
+function openLooksPage() {
+  document.getElementById('looksPage').style.display = 'block';
+  document.body.style.overflow = 'hidden';
+}
+function closeLooksPage() {
+  document.getElementById('looksPage').style.display = 'none';
+  document.body.style.overflow = '';
+}
+document.addEventListener('keydown', e => {
+  if (e.key === 'Escape' && document.getElementById('looksPage').style.display !== 'none') closeLooksPage();
+});
+</script>
+
+
+<script>
+// ─── DROPDOWN: JS-controlled with hover delay ───
+(function() {
+  const dropdowns = document.querySelectorAll('.has-dropdown');
+  dropdowns.forEach(dd => {
+    let closeTimer = null;
+
+    function openDd() {
+      clearTimeout(closeTimer);
+      // Close all others
+      dropdowns.forEach(other => { if (other !== dd) other.classList.remove('open'); });
+      dd.classList.add('open');
+    }
+
+    function closeDd(delay = 200) {
+      clearTimeout(closeTimer);
+      closeTimer = setTimeout(() => dd.classList.remove('open'), delay);
+    }
+
+    // Trigger element (the nav link)
+    const trigger = dd.querySelector('.dropdown-trigger');
+    trigger.addEventListener('mouseenter', openDd);
+    trigger.addEventListener('mouseleave', () => closeDd(200));
+
+    // Dropdown menu — keep open while hovering inside
+    const menu = dd.querySelector('.dropdown-menu');
+    if (menu) {
+      menu.addEventListener('mouseenter', () => { clearTimeout(closeTimer); });
+      menu.addEventListener('mouseleave', () => closeDd(150));
+    }
+
+    // Click on trigger also toggles (for touch/mobile)
+    trigger.addEventListener('click', e => {
+      e.preventDefault();
+      dd.classList.toggle('open');
+    });
+  });
+
+  // Close all dropdowns on click outside
+  document.addEventListener('click', e => {
+    if (!e.target.closest('.has-dropdown')) {
+      dropdowns.forEach(dd => dd.classList.remove('open'));
+    }
+  });
+
+  // Close on scroll
+  window.addEventListener('scroll', () => {
+    dropdowns.forEach(dd => dd.classList.remove('open'));
+  }, { passive: true });
+})();
+
+// ─── EmailJS CONFIG ───
+const EMAILJS_SERVICE_ID  = 'YOUR_SERVICE_ID';
+const EMAILJS_TEMPLATE_ID = 'YOUR_TEMPLATE_ID';
+const EMAILJS_PUBLIC_KEY  = 'YOUR_PUBLIC_KEY';
+
+// ─── HELPERS ───
+function hlShip(el) {
+  document.querySelectorAll('[id^="cship-"]').forEach(l => l.style.borderColor = '#e8e8e8');
+  el.style.borderColor = '#111';
+}
+function hlPay(el) {
+  document.querySelectorAll('[id^="pay-"]').forEach(l => l.style.borderColor = '#e8e8e8');
+  el.style.borderColor = '#111';
+}
+
+// ─── PAYMENT TIMER ───
+let _payTimerInterval = null;
+function startPayTimer(seconds) {
+  clearInterval(_payTimerInterval);
+  let remaining = seconds;
+  const el = document.getElementById('payTimer');
+  function tick() {
+    const m = Math.floor(remaining / 60).toString().padStart(2,'0');
+    const s = (remaining % 60).toString().padStart(2,'0');
+    if (el) el.textContent = m + ':' + s;
+    if (remaining <= 0) { clearInterval(_payTimerInterval); if(el) el.textContent = 'EXPIRED'; }
+    remaining--;
+  }
+  tick();
+  _payTimerInterval = setInterval(tick, 1000);
+}
+
+// ─── GENERATE QR PATTERN ───
+function drawQRIS(canvasId) {
+  const canvas = document.getElementById(canvasId);
+  if (!canvas) return;
+  const ctx = canvas.getContext('2d');
+  const size = 196;
+  const cell = 7;
+  const cols = Math.floor(size / cell);
+  ctx.fillStyle = '#fff'; ctx.fillRect(0, 0, size, size);
+  ctx.fillStyle = '#111';
+  // Seed-based pattern
+  const seed = Date.now();
+  for (let r = 0; r < cols; r++) {
+    for (let c = 0; c < cols; c++) {
+      const corner = (r < 7 && c < 7) || (r < 7 && c > cols-8) || (r > cols-8 && c < 7);
+      if (corner) { ctx.fillRect(c*cell, r*cell, cell, cell); continue; }
+      const hash = ((r * 31 + c) * 1234567 + seed) % 100;
+      if (hash < 45) ctx.fillRect(c*cell, r*cell, cell, cell);
+    }
+  }
+  // Corner squares (finder patterns)
+  [[0,0],[0,cols-7],[cols-7,0]].forEach(([r,c]) => {
+    ctx.clearRect(c*cell, r*cell, 7*cell, 7*cell);
+    ctx.fillStyle = '#111';
+    ctx.fillRect(c*cell, r*cell, 7*cell, 7*cell);
+    ctx.fillStyle = '#fff';
+    ctx.fillRect((c+1)*cell, (r+1)*cell, 5*cell, 5*cell);
+    ctx.fillStyle = '#111';
+    ctx.fillRect((c+2)*cell, (r+2)*cell, 3*cell, 3*cell);
+  });
+}
+
+function copyVA() {
+  const va = document.getElementById('vaNumber').textContent;
+  navigator.clipboard.writeText(va.replace(/\s/g,'')).then(() => {
+    const btn = document.getElementById('copyVABtn');
+    btn.textContent = '✓ Tersalin!'; btn.style.background = '#2e7d32';
+    setTimeout(() => { btn.textContent = 'Salin'; btn.style.background = '#111'; }, 2000);
+  });
+}
+
+// ─── STEP 1 → STEP 2 ───
+function goToPaymentStep() {
+  const name    = document.getElementById('coName').value.trim();
+  const email   = document.getElementById('coEmail').value.trim();
+  const address = document.getElementById('coAddress').value.trim();
+  if (!name)    { document.getElementById('coName').focus();    alert('Mohon isi nama lengkap.'); return; }
+  if (!email)   { document.getElementById('coEmail').focus();   alert('Mohon isi email.'); return; }
+  if (!address) { document.getElementById('coAddress').focus(); alert('Mohon isi alamat pengiriman.'); return; }
+
+  const payment  = document.querySelector('input[name="payment"]:checked')?.value || 'BCA';
+  const shipping = document.querySelector('input[name="coShipping"]:checked')?.value || 'JNE Regular';
+  const phone    = document.getElementById('coPhone').value.trim();
+  const items    = window._checkoutItems || cart.filter(i => i.checked !== false);
+
+  let subtotal = 0;
+  items.forEach(i => { const n = parseInt((i.price||'0').replace(/[^0-9]/g,'')); subtotal += n * i.qty; });
+
+  const orderId   = 'NN' + Date.now().toString().slice(-8).toUpperCase();
+  const orderDate = new Date().toLocaleDateString('id-ID',{weekday:'long',year:'numeric',month:'long',day:'numeric'});
+  const orderTime = new Date().toLocaleTimeString('id-ID',{hour:'2-digit',minute:'2-digit'});
+
+  window._lastOrder = { orderId, name, email, phone, address, payment, shipping, items, subtotal, orderDate, orderTime };
+
+  // Fill payment page
+  document.getElementById('payTotalAmount').textContent = 'IDR ' + subtotal.toLocaleString('id-ID');
+  document.getElementById('payOrderIdSmall').textContent = 'Order #' + orderId;
+
+  const isQRIS = payment === 'QRIS';
+  document.getElementById('vaSection').style.display  = isQRIS ? 'none' : 'block';
+  document.getElementById('qrisSection').style.display = isQRIS ? 'block' : 'none';
+
+  if (!isQRIS) {
+    const isBCA = payment === 'BCA';
+    const vaNum = (isBCA ? '00816' : '89500') + Math.floor(Math.random()*1e10).toString().padStart(10,'0');
+    document.getElementById('vaNumber').textContent = vaNum.slice(0,5)+' '+vaNum.slice(5,10)+' '+vaNum.slice(10);
+    document.getElementById('payBankLogo').textContent  = isBCA ? 'BCA' : 'MDR';
+    document.getElementById('payBankLogo').style.background = isBCA ? '#005BAC' : '#003F88';
+    document.getElementById('payBankName').textContent  = isBCA ? 'BCA' : 'Mandiri';
+  } else {
+    setTimeout(() => drawQRIS('qrisCanvas'), 100);
+  }
+
+  startPayTimer(24 * 60 * 60); // 24 jam
+  document.getElementById('paymentPage').style.display = 'block';
+  document.getElementById('paymentPage').scrollTop = 0;
+}
+
+function closePaymentPage() {
+  document.getElementById('paymentPage').style.display = 'none';
+  clearInterval(_payTimerInterval);
+}
+
+// ─── STEP 2 → STEP 3 ───
+function confirmPayment() {
+  clearInterval(_payTimerInterval);
+  const order = window._lastOrder;
+  if (!order) return;
+
+  // Save to order history
+  let history = JSON.parse(localStorage.getItem('nn_order_history') || '[]');
+  history.unshift({ ...order, status: 'Dibayar', savedAt: new Date().toISOString() });
+  localStorage.setItem('nn_order_history', JSON.stringify(history));
+
+  // Clear cart
+  if (!window._checkoutItems) { cart = []; saveCart(); }
+  window._checkoutItems = null;
+
+  // Update account badge
+  updateAccountBadge();
+
+  // Hide checkout and payment
+  document.getElementById('checkoutPage').style.display  = 'none';
+  document.getElementById('paymentPage').style.display   = 'none';
+  document.getElementById('cartPage').style.display      = 'none';
+  document.getElementById('productDetailPage').style.display = 'none';
+
+  // Show confirmation
+  openConfirmationPage(order);
+  sendConfirmationEmail(order);
+}
+
+// ─── CONFIRMATION PAGE ───
+function openConfirmationPage(order) {
+  document.getElementById('confOrderId').textContent   = order.orderId;
+  document.getElementById('confDateTime').textContent  = order.orderDate + ', ' + order.orderTime;
+  document.getElementById('confName').textContent      = order.name;
+  document.getElementById('confPhone').textContent     = order.phone || '—';
+  document.getElementById('confAddress').textContent   = order.address;
+  document.getElementById('confShipping').textContent  = order.shipping;
+  document.getElementById('confPayment').textContent   = order.payment + ' Transfer';
+
+  const listEl = document.getElementById('confProductList');
+  listEl.innerHTML = order.items.map(item => `
+    <div style="display:flex;gap:12px;padding:14px 16px;border-bottom:1px solid #f8f8f8;align-items:flex-start;">
+      <div style="width:64px;min-width:64px;aspect-ratio:3/4;border-radius:8px;overflow:hidden;background:#f5f5f5;">
+        <img src="${item.img}" style="width:100%;height:100%;object-fit:cover;object-position:center top;">
+      </div>
+      <div style="flex:1;">
+        <p style="font-family:'DM Sans',sans-serif;font-size:9px;color:#aaa;margin:0 0 2px;text-transform:uppercase;letter-spacing:0.12em;">${item.series}</p>
+        <p style="font-family:'Playfair Display',serif;font-size:14px;color:#111;margin:0 0 4px;">${item.name}</p>
+        <p style="font-family:'DM Sans',sans-serif;font-size:11px;color:#999;margin:0 0 6px;">All Size · ${item.color||'—'} · Qty: ${item.qty}</p>
+        <p style="font-family:'DM Sans',sans-serif;font-size:14px;font-weight:700;color:#D84040;margin:0;">${item.price}</p>
+      </div>
+    </div>
+  `).join('');
+
+  const priceEl = document.getElementById('confPriceSummary');
+  const totalQty = order.items.reduce((s,i) => s+i.qty, 0);
+  priceEl.innerHTML = `
+    <div style="display:flex;justify-content:space-between;margin-bottom:8px;">
+      <span style="font-family:'DM Sans',sans-serif;font-size:12px;color:#888;">Subtotal (${totalQty} produk)</span>
+      <span style="font-family:'DM Sans',sans-serif;font-size:12px;color:#333;">IDR ${order.subtotal.toLocaleString('id-ID')}</span>
+    </div>
+    <div style="display:flex;justify-content:space-between;margin-bottom:10px;">
+      <span style="font-family:'DM Sans',sans-serif;font-size:12px;color:#888;">Ongkos Kirim</span>
+      <span style="font-family:'DM Sans',sans-serif;font-size:12px;color:#2e7d32;font-weight:500;">Gratis</span>
+    </div>
+    <div style="border-top:1.5px dashed #eee;padding-top:10px;display:flex;justify-content:space-between;align-items:center;">
+      <span style="font-family:'DM Sans',sans-serif;font-size:13px;font-weight:700;color:#111;">Total Bayar</span>
+      <span style="font-family:'DM Sans',sans-serif;font-size:18px;font-weight:700;color:#D84040;">IDR ${order.subtotal.toLocaleString('id-ID')}</span>
+    </div>
+    <div style="display:flex;justify-content:space-between;padding-top:6px;">
+      <span style="font-family:'DM Sans',sans-serif;font-size:11px;color:#aaa;">Waktu Bayar</span>
+      <span style="font-family:'DM Sans',sans-serif;font-size:11px;color:#aaa;">${order.orderTime} WIB</span>
+    </div>`;
+
+  document.getElementById('emailSendingNotice').style.display = 'block';
+  document.getElementById('emailSentNotice').style.display = 'none';
+
+  const page = document.getElementById('confirmationPage');
+  page.style.display = 'block';
+  page.scrollTop = 0;
+  document.body.style.overflow = 'hidden';
+}
+
+function closeConfirmationPage() {
+  document.getElementById('confirmationPage').style.display = 'none';
+  document.body.style.overflow = '';
+}
+
+// ─── ACCOUNT / ORDER HISTORY ───
+function updateAccountBadge() {
+  const history = JSON.parse(localStorage.getItem('nn_order_history') || '[]');
+  const navBtns = document.querySelectorAll('.nav-icon-btn[aria-label="Account"]');
+  navBtns.forEach(btn => {
+    btn.style.position = 'relative';
+    let badge = btn.querySelector('.account-badge');
+    if (history.length > 0) {
+      if (!badge) { badge = document.createElement('span'); badge.className='account-badge'; badge.style.cssText='position:absolute;top:0;right:0;background:#D84040;color:#fff;border-radius:50%;width:16px;height:16px;font-size:9px;font-family:DM Sans,sans-serif;display:flex;align-items:center;justify-content:center;font-weight:600;pointer-events:none;'; btn.appendChild(badge); }
+      badge.textContent = history.length > 9 ? '9+' : history.length;
+    } else { if (badge) badge.remove(); }
+  });
+}
+
+function openAccountPage() {
+  const history = JSON.parse(localStorage.getItem('nn_order_history') || '[]');
+  const listEl = document.getElementById('orderHistoryList');
+  const emptyEl = document.getElementById('accountEmpty');
+
+  if (history.length === 0) {
+    emptyEl.style.display = 'block';
+    listEl.style.display = 'none';
+  } else {
+    emptyEl.style.display = 'none';
+    listEl.style.display = 'flex';
+    listEl.innerHTML = history.map((order, idx) => `
+      <div style="background:#fff;border-radius:12px;overflow:hidden;box-shadow:0 1px 6px rgba(0,0,0,0.05);">
+        <div style="padding:12px 16px;border-bottom:1px solid #f5f5f5;display:flex;align-items:center;justify-content:space-between;">
+          <div>
+            <p style="font-family:'DM Sans',sans-serif;font-size:10px;color:#888;margin:0 0 2px;">${order.orderDate}</p>
+            <p style="font-family:'DM Sans',sans-serif;font-size:13px;font-weight:700;color:#111;margin:0;letter-spacing:0.06em;">${order.orderId}</p>
+          </div>
+          <span style="background:#e8f5e9;color:#2e7d32;font-family:'DM Sans',sans-serif;font-size:10px;font-weight:600;padding:4px 10px;border-radius:20px;">${order.status||'Dibayar'}</span>
+        </div>
+        <div style="padding:12px 16px;">
+          ${order.items.slice(0,2).map(item => `
+            <div style="display:flex;gap:10px;align-items:center;margin-bottom:8px;">
+              <div style="width:44px;min-width:44px;aspect-ratio:3/4;border-radius:6px;overflow:hidden;background:#f5f5f5;">
+                <img src="${item.img}" style="width:100%;height:100%;object-fit:cover;object-position:center top;">
+              </div>
+              <div style="flex:1;min-width:0;">
+                <p style="font-family:'Playfair Display',serif;font-size:13px;color:#111;margin:0 0 2px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;">${item.name}</p>
+                <p style="font-family:'DM Sans',sans-serif;font-size:11px;color:#999;margin:0;">All Size · ${item.color||'—'} · ×${item.qty}</p>
+              </div>
+              <p style="font-family:'DM Sans',sans-serif;font-size:12px;font-weight:600;color:#D84040;margin:0;white-space:nowrap;">${item.price}</p>
+            </div>
+          `).join('')}
+          ${order.items.length > 2 ? `<p style="font-family:'DM Sans',sans-serif;font-size:11px;color:#888;margin:4px 0 0;">+${order.items.length-2} produk lainnya</p>` : ''}
+        </div>
+        <div style="padding:10px 16px;border-top:1px solid #f5f5f5;display:flex;align-items:center;justify-content:space-between;">
+          <span style="font-family:'DM Sans',sans-serif;font-size:12px;color:#888;">Total Bayar</span>
+          <span style="font-family:'DM Sans',sans-serif;font-size:15px;font-weight:700;color:#D84040;">IDR ${order.subtotal.toLocaleString('id-ID')}</span>
+        </div>
+      </div>
+    `).join('');
+  }
+
+  const page = document.getElementById('accountPage');
+  page.style.display = 'block';
+  page.scrollTop = 0;
+  document.body.style.overflow = 'hidden';
+}
+
+function closeAccountPage() {
+  document.getElementById('accountPage').style.display = 'none';
+  document.body.style.overflow = '';
+}
+
+function clearOrderHistory() {
+  if (!confirm('Hapus semua riwayat pembelian?')) return;
+  localStorage.removeItem('nn_order_history');
+  updateAccountBadge();
+  openAccountPage();
+}
+
+// Wire account icon to open history
+document.addEventListener('DOMContentLoaded', () => {
+  updateAccountBadge();
+  updateCartBadges();
+  // Wire account nav buttons
+  document.querySelectorAll('.nav-icon-btn[aria-label="Account"]').forEach(btn => {
+    btn.onclick = () => openAccountPage();
+    btn.style.position = 'relative';
+    btn.style.cursor = 'pointer';
+  });
+});
+
+// ─── EMAIL ───
+function sendConfirmationEmail(order) {
+  const itemsText = order.items.map(i => `• ${i.name} ×${i.qty} — ${i.price}`).join('\n');
+  const params = {
+    to_email: order.email, to_name: order.name,
+    order_id: order.orderId, order_date: order.orderDate + ', ' + order.orderTime,
+    order_items: itemsText, subtotal: 'IDR ' + order.subtotal.toLocaleString('id-ID'),
+    payment: order.payment, shipping: order.shipping, address: order.address,
+  };
+  if (EMAILJS_PUBLIC_KEY === 'YOUR_PUBLIC_KEY') { showEmailStatus(false, order.email); return; }
+  if (typeof emailjs !== 'undefined') {
+    emailjs.init(EMAILJS_PUBLIC_KEY);
+    emailjs.send(EMAILJS_SERVICE_ID, EMAILJS_TEMPLATE_ID, params)
+      .then(() => showEmailStatus(true, order.email))
+      .catch(() => showEmailStatus(false, order.email));
+  } else { showEmailStatus(false, order.email); }
+}
+
+function showEmailStatus(ok, email) {
+  document.getElementById('emailSendingNotice').style.display = 'none';
+  const el = document.getElementById('emailSentNotice');
+  el.style.display = 'block';
+  if (ok) {
+    el.style.background = '#e8f5e9';
+    document.getElementById('emailSentText').style.color = '#2e7d32';
+    document.getElementById('emailSentText').innerHTML = '📧 Konfirmasi dikirim ke <strong>' + email + '</strong>';
+  } else {
+    el.style.background = '#fff3e0';
+    document.getElementById('emailSentText').style.color = '#e65100';
+    document.getElementById('emailSentText').innerHTML = '⚠️ Email tidak terkirim otomatis. Simpan halaman ini sebagai bukti pesanan.';
+  }
+}
+
+// ─── openCheckoutPageDirect (shared by buyNow & proceedCheckout) ───
+function openCheckoutPageDirect(items) {
+  window._checkoutItems = items;
+  const summaryEl = document.getElementById('checkoutOrderSummary');
+  let total = 0;
+  summaryEl.innerHTML = '<div style="border-bottom:1px solid #f5f5f5;margin-bottom:10px;padding-bottom:10px;">' +
+    items.map(item => {
+      const n = parseInt((item.price||'0').replace(/[^0-9]/g,''));
+      total += n * item.qty;
+      return `<div style="display:flex;gap:10px;align-items:center;margin-bottom:8px;">
+        <div style="width:44px;aspect-ratio:3/4;border-radius:6px;overflow:hidden;background:#f5f5f5;min-width:44px;">
+          <img src="${item.img}" style="width:100%;height:100%;object-fit:cover;object-position:center top;">
+        </div>
+        <div style="flex:1;min-width:0;">
+          <p style="font-family:'Playfair Display',serif;font-size:13px;color:#111;margin:0 0 2px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;">${item.name}</p>
+          <p style="font-family:'DM Sans',sans-serif;font-size:11px;color:#999;margin:0;">×${item.qty} · ${item.color||'—'}</p>
+        </div>
+        <p style="font-family:'DM Sans',sans-serif;font-size:12px;font-weight:600;color:#D84040;margin:0;white-space:nowrap;">${item.price}</p>
+      </div>`;
+    }).join('') + '</div>' +
+    `<div style="display:flex;justify-content:space-between;"><span style="font-family:'DM Sans',sans-serif;font-size:12px;font-weight:700;color:#111;">Total</span><span style="font-family:'DM Sans',sans-serif;font-size:14px;font-weight:700;color:#D84040;">IDR ${total.toLocaleString('id-ID')}</span></div>`;
+
+  const coEmail = document.getElementById('pdEmail')?.value;
+  if (coEmail) document.getElementById('coEmail').value = coEmail;
+
+  document.getElementById('productDetailPage').style.display = 'none';
+  const co = document.getElementById('checkoutPage');
+  co.style.display = 'block';
+  co.scrollTop = 0;
+  document.body.style.overflow = 'hidden';
+}
+
+function closeCheckoutPage() {
+  document.getElementById('checkoutPage').style.display = 'none';
+  if (window._checkoutItems && currentProduct) {
+    document.getElementById('productDetailPage').style.display = 'block';
+  } else {
+    document.body.style.overflow = '';
+  }
+}
+
+// submitOrder is no longer used — goToPaymentStep handles step 1→2
+// confirmPayment handles step 2→3
+
+// Escape key handler
+document.addEventListener('keydown', e => {
+  if (e.key !== 'Escape') return;
+  const pages = ['accountPage','confirmationPage','paymentPage','checkoutPage'];
+  for (const id of pages) {
+    const el = document.getElementById(id);
+    if (el && el.style.display !== 'none') { el.style.display = 'none'; document.body.style.overflow = ''; return; }
+  }
+});

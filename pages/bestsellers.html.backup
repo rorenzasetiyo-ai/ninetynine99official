@@ -1,0 +1,88 @@
+<section id="bestseller">
+  <div class="container">
+    <div class="section-head reveal" style="justify-content:center;text-align:center;">
+      <div>
+        <span class="section-label">Most Loved</span>
+        <h2 class="section-title">Best Seller</h2>
+      </div>
+    </div>
+    <div class="product-grid">
+      <!-- Card 1 -->
+      <div class="product-card reveal">
+        <div class="product-img-wrap" style="cursor:pointer;" onclick="openProductDetail('prod_0'); return false;">
+          <img class="img-main" loading="lazy" src="images/img-1.jpeg" alt="Sestra 5050 Siderope Flowbordir" style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover;object-position:center top;">
+          <img class="img-hover" loading="lazy" src="images/img-2.jpeg" alt="Sestra 5050 Siderope Flowbordir hover" style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover;object-position:center top;">
+          <div class="product-actions">
+            <button class="product-action-btn wishlist-btn" aria-label="Add to wishlist" data-id="prod_0" data-name="Siderope Flowbordir" data-series="Code SESTRA 5050 Oneseat" data-price="—" onclick="toggleWishlist(this)">
+              <svg viewBox="0 0 24 24"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg>
+            </button>
+            <button class="product-action-btn" aria-label="Add to cart" onclick="quickAddToCart('prod_0'); return false;">
+              <svg viewBox="0 0 24 24"><path d="M6 2L3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z"/><line x1="3" y1="6" x2="21" y2="6"/><path d="M16 10a4 4 0 0 1-8 0"/></svg>
+            </button>
+          </div>
+        </div>
+        <div class="product-info">
+          <p class="product-series">Code SESTRA 5050 Oneseat</p>
+          <p class="product-name">Siderope Flowbordir</p>
+        </div>
+      </div>
+      <!-- Card 2 -->
+      <div class="product-card reveal" style="transition-delay:0.1s">
+        <div class="product-img-wrap" style="cursor:pointer;" onclick="openProductDetail('prod_1'); return false;">
+          <img class="img-main" loading="lazy" src="images/img-3.jpeg" alt="DRLFY Cream Bordir Dress" style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover;object-position:center top;">
+          <img class="img-hover" loading="lazy" src="images/img-4.jpeg" alt="DRLFY Cream Bordir Dress hover" style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover;object-position:center top;">
+          <div class="product-actions">
+            <button class="product-action-btn wishlist-btn" aria-label="Add to wishlist" data-id="prod_1" data-name="Cream Bordir Dress" data-series="Code DRLFY 6080" data-price="—" onclick="toggleWishlist(this)">
+              <svg viewBox="0 0 24 24"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg>
+            </button>
+            <button class="product-action-btn" aria-label="Add to cart" onclick="quickAddToCart('prod_1'); return false;">
+              <svg viewBox="0 0 24 24"><path d="M6 2L3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z"/><line x1="3" y1="6" x2="21" y2="6"/><path d="M16 10a4 4 0 0 1-8 0"/></svg>
+            </button>
+          </div>
+        </div>
+        <div class="product-info">
+          <p class="product-series">Code DRLFY 6080</p>
+          <p class="product-name">Cream Bordir Dress</p>
+        </div>
+      </div>
+      <!-- Card 3 -->
+      <div class="product-card reveal" style="transition-delay:0.2s">
+        <div class="product-img-wrap" style="cursor:pointer;" onclick="openProductDetail('prod_2'); return false;">
+          <img class="img-main" loading="lazy" src="images/img-5.jpeg" alt="DRYN Seemivest Bordir Flow Dress" style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover;object-position:center top;">
+          <img class="img-hover" loading="lazy" src="images/img-6.jpeg" alt="DRYN Seemivest Bordir Flow Dress hover" style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover;object-position:center top;">
+          <div class="product-actions">
+            <button class="product-action-btn wishlist-btn" aria-label="Add to wishlist" data-id="prod_2" data-name="Seemivest Bordir Flow Dress" data-series="Code DRYN 6357" data-price="—" onclick="toggleWishlist(this)">
+              <svg viewBox="0 0 24 24"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg>
+            </button>
+            <button class="product-action-btn" aria-label="Add to cart" onclick="quickAddToCart('prod_2'); return false;">
+              <svg viewBox="0 0 24 24"><path d="M6 2L3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z"/><line x1="3" y1="6" x2="21" y2="6"/><path d="M16 10a4 4 0 0 1-8 0"/></svg>
+            </button>
+          </div>
+        </div>
+        <div class="product-info">
+          <p class="product-series">Code DRYN 6357</p>
+          <p class="product-name">Seemivest Bordir Flow Dress</p>
+        </div>
+      </div>
+      <!-- Card 4 -->
+      <div class="product-card reveal" style="transition-delay:0.3s">
+        <div class="product-img-wrap" style="cursor:pointer;" onclick="openProductDetail('prod_3'); return false;">
+          <img class="img-main" loading="lazy" src="images/img-7.jpeg" alt="TNVX 8307 3 Pocky Top" style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover;object-position:center top;">
+          <img class="img-hover" loading="lazy" src="images/img-8.jpeg" alt="TNVX 8307 3 Pocky Top hover" style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover;object-position:center top;">
+          <div class="product-actions">
+            <button class="product-action-btn wishlist-btn" aria-label="Add to wishlist" data-id="prod_3" data-name="3 Pocky Top" data-series="Code TNVX 8307" data-price="—" onclick="toggleWishlist(this)">
+              <svg viewBox="0 0 24 24"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg>
+            </button>
+            <button class="product-action-btn" aria-label="Add to cart" onclick="quickAddToCart('prod_3'); return false;">
+              <svg viewBox="0 0 24 24"><path d="M6 2L3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z"/><line x1="3" y1="6" x2="21" y2="6"/><path d="M16 10a4 4 0 0 1-8 0"/></svg>
+            </button>
+          </div>
+        </div>
+        <div class="product-info">
+          <p class="product-series">Code TNVX 8307</p>
+          <p class="product-name">3 Pocky Top</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
