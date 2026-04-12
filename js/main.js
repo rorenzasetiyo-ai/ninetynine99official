@@ -210,7 +210,3 @@ function closeMobileMenu() {
 
 hamburgerBtn.addEventListener('click', openMobileMenu);
 mobileClose.addEventListener('click', closeMobileMenu);
-
-function openAllProductsPage() {
-  window.location.href = "pages/all-products.html";
-}
