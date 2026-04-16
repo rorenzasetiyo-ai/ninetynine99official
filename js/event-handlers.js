@@ -96,6 +96,15 @@ document.addEventListener('DOMContentLoaded', () => {
         case 'close-new-arrivals':
           closeNewArrivals?.();
           break;
+          
+        case 'open-account':
+          openAccountPage?.();
+          event.preventDefault();
+          break;
+          
+        case 'close-account':
+          closeAccountPage?.();
+          break;
       }
     } catch (error) {
       console.error(`Error handling action "${action}":`, error);

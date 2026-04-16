@@ -1,0 +1,19 @@
+# Always use HTTPS
+http://* https://:splat 301!
+
+# Prevent directory listing
+/admin 404
+/api 404
+
+# Protect sensitive files
+/.env 404
+/.git 404
+/.git* 404
+/.md5 404
+/.htaccess 404
+/web.config 404
+/config.php 404
+/config.js 404
+/package.json 404
+/package-lock.json 404
+/yarn.lock 404

@@ -1,0 +1,16 @@
+{
+  "name": "ninetynine-production",
+  "version": "1.0.0",
+  "description": "Premium Fashion E-commerce Website - Ninetynine",
+  "scripts": {
+    "build": "echo 'No build step needed - static files'",
+    "dev": "wrangler pages dev .",
+    "deploy": "wrangler pages deploy ."
+  },
+  "devDependencies": {
+    "@cloudflare/wrangler": "^3.0.0"
+  },
+  "keywords": ["ecommerce", "fashion", "ninetynine"],
+  "author": "Ninetynine",
+  "license": "MIT"
+}

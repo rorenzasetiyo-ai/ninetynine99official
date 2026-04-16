@@ -67,32 +67,49 @@ function smoothScroll(id) {
 function initDropdowns() {
   const dropdowns = document.querySelectorAll('.has-dropdown');
   dropdowns.forEach(dd => {
+    const menu = dd.querySelector('.dropdown-menu');
+    const trigger = dd.querySelector('.dropdown-trigger');
+    const svg = trigger.querySelector('svg');
     let closeTimer = null;
 
-    function openDd() {
+    function openDropdown() {
       clearTimeout(closeTimer);
-      dd.querySelector('.dropdown-menu').style.display = 'block';
+      menu.style.display = 'block';
+      menu.style.opacity = '1';
+      menu.style.visibility = 'visible';
+      menu.style.pointerEvents = 'auto';
+      if (svg) svg.style.transform = 'rotate(180deg)';
       dd.classList.add('open');
-      dd.querySelector('.dropdown-trigger svg').style.transform = 'rotate(180deg)';
     }
 
-    function closeDd() {
+    function closeDropdown() {
       closeTimer = setTimeout(() => {
-        dd.querySelector('.dropdown-menu').style.display = 'none';
+        menu.style.opacity = '0';
+        menu.style.visibility = 'hidden';
+        menu.style.pointerEvents = 'none';
+        setTimeout(() => {
+          menu.style.display = 'none';
+        }, 250);
+        if (svg) svg.style.transform = '';
         dd.classList.remove('open');
-        dd.querySelector('.dropdown-trigger svg').style.transform = '';
-      }, 300);
+      }, 150);
     }
 
-    dd.addEventListener('mouseenter', openDd);
-    dd.addEventListener('mouseleave', closeDd);
+    // Hover events
+    dd.addEventListener('mouseenter', openDropdown);
+    dd.addEventListener('mouseleave', closeDropdown);
 
-    const trigger = dd.querySelector('.dropdown-trigger');
-    if (trigger) trigger.addEventListener('click', e => {
-      e.preventDefault();
-      if (dd.classList.contains('open')) closeDd();
-      else openDd();
-    });
+    // Click event
+    if (trigger) {
+      trigger.addEventListener('click', e => {
+        e.preventDefault();
+        if (menu.style.opacity === '1') {
+          closeDropdown();
+        } else {
+          openDropdown();
+        }
+      });
+    }
   });
 }
 
@@ -142,4 +159,49 @@ document.addEventListener('DOMContentLoaded', () => {
   initDropdowns();
   initMobileMenu();
   initScrollReveal();
+  initEventListeners();
 });
+
+// Initialize event listeners for UI elements
+function initEventListeners() {
+  // Account page back button
+  const accountBackBtn = document.getElementById('accountPageBackBtn');
+  if (accountBackBtn) {
+    accountBackBtn.addEventListener('click', (e) => {
+      e.preventDefault();
+      closeAccountPage();
+    });
+  }
+
+  // Search page back button
+  const searchBackBtn = document.getElementById('searchPageBackBtn');
+  if (searchBackBtn) {
+    searchBackBtn.addEventListener('click', (e) => {
+      e.preventDefault();
+      closeSearchPage();
+    });
+  }
+
+  // Search page close button
+  const searchCloseBtn = document.getElementById('searchPageCloseBtn');
+  if (searchCloseBtn) {
+    searchCloseBtn.addEventListener('click', (e) => {
+      e.preventDefault();
+      closeSearchPage();
+    });
+  }
+
+  // Search input - only if debounceSearch function exists
+  const searchInput = document.getElementById('searchInput');
+  if (searchInput && typeof debounceSearch === 'function') {
+    searchInput.addEventListener('input', debounceSearch);
+  }
+
+  // Dropdown trigger prevent default
+  const dropdownTrigger = document.querySelector('.dropdown-trigger');
+  if (dropdownTrigger) {
+    dropdownTrigger.addEventListener('click', (e) => {
+      e.preventDefault();
+    });
+  }
+}

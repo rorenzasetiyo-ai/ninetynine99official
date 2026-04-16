@@ -5,21 +5,21 @@ if (!navbar) return;
 let scrollTimeout;
 
 function onScroll() {
-  // When scrolling, remove the scrolled class (make transparent)
-  navbar.classList.remove('scrolled');
+  // When scrolling, add the scrolled class (make white/opaque)
+  navbar.classList.add('scrolled');
   
   if (scrollTimeout) {
     clearTimeout(scrollTimeout);
   }
   
-  // After user stops scrolling, add scrolled class back (make white/opaque)
+  // After user stops scrolling, remove scrolled class (make transparent)
   scrollTimeout = setTimeout(() => {
-    navbar.classList.add('scrolled');
+    navbar.classList.remove('scrolled');
   }, 1500);
 }
 
 window.addEventListener('scroll', onScroll, { passive: true });
 
-// Start with scrolled class (white/opaque navbar)
-navbar.classList.add('scrolled');
+// Start with transparent navbar (no scrolled class)
+navbar.classList.remove('scrolled');
 })();

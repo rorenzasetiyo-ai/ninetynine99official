@@ -186,27 +186,4 @@ document.addEventListener('keydown', (e) => {
   }
 });
 
-function openMobileMenu() {
-  mobileMenu.style.display = 'flex';
-  hamburgerBtn.classList.add('open');
-  requestAnimationFrame(() => {
-    mobileMenu.classList.add('open');
-    mobileOverlay.style.display = 'block';
-    requestAnimationFrame(() => mobileOverlay.classList.add('visible'));
-  });
-  document.body.style.overflow = 'hidden';
-}
-
-function closeMobileMenu() {
-  hamburgerBtn.classList.remove('open');
-  mobileMenu.classList.remove('open');
-  mobileOverlay.classList.remove('visible');
-  document.body.style.overflow = '';
-  setTimeout(() => {
-    mobileMenu.style.display = 'none';
-    mobileOverlay.style.display = 'none';
-  }, 350);
-}
-
-hamburgerBtn.addEventListener('click', openMobileMenu);
-mobileClose.addEventListener('click', closeMobileMenu);
+// Mobile menu initialization is handled by utils.js initMobileMenu()

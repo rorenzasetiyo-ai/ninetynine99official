@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Heart Color Test</title>
+  <style>
+    body { font-family: Arial; padding: 20px; }
+    .test-section { margin: 20px 0; padding: 20px; border: 1px solid #ddd; }
+    button { padding: 10px 20px; cursor: pointer; }
+    svg { display: inline-block; }
+  </style>
+</head>
+<body>
+  <h1>Heart SVG Color Change Test</h1>
+  
+  <div class="test-section">
+    <h2>Test 1: Direct SVG Color Change</h2>
+    <button onclick="testChangeColor()">Click to Change Heart Color</button>
+    <svg id="testSvg" viewBox="0 0 24 24" width="30" height="30" style="fill:#999999;margin-left:10px;">
+      <path id="testPath" d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z" style="fill:#999999;"/>
+    </svg>
+  </div>
+
+  <div class="test-section">
+    <h2>Test 2: Toggle Red/Gray</h2>
+    <button onclick="testToggleColor()">Click to Toggle</button>
+    <svg id="toggleSvg" viewBox="0 0 24 24" width="30" height="30" style="fill:#999999;margin-left:10px;">
+      <path id="togglePath" d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z" style="fill:#999999;"/>
+    </svg>
+  </div>
+
+  <script>
+    let toggleState = false;
+    
+    function testChangeColor() {
+      const svg = document.getElementById('testSvg');
+      const path = document.getElementById('testPath');
+      console.log('Changing color...');
+      svg.style.fill = '#B85252';
+      path.style.fill = '#B85252';
+      console.log('SVG fill:', svg.style.fill);
+      console.log('Path fill:', path.style.fill);
+    }
+    
+    function testToggleColor() {
+      const svg = document.getElementById('toggleSvg');
+      const path = document.getElementById('togglePath');
+      toggleState = !toggleState;
+      const color = toggleState ? '#B85252' : '#999999';
+      console.log('Toggling to:', color);
+      svg.style.fill = color;
+      path.style.fill = color;
+      console.log('SVG fill:', svg.style.fill);
+    }
+  </script>
+</body>
+</html>
