@@ -186,4 +186,14 @@ document.addEventListener('keydown', (e) => {
   }
 });
 
+function addToCart() {
+  const cartModal = document.getElementById("cartModal");
+  if (cartModal) {
+    cartModal.style.display = "block";
+  }
+}
+
+function buyNow() {
+  window.location.href = "checkout.html";
+}
 // Mobile menu initialization is handled by utils.js initMobileMenu()
