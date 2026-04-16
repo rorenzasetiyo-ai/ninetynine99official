@@ -186,14 +186,14 @@ document.addEventListener('keydown', (e) => {
   }
 });
 
-function addToCart() {
-  const cartModal = document.getElementById("cartModal");
-  if (cartModal) {
-    cartModal.style.display = "block";
-  }
-}
+// Tombol halaman produk
+window.addToCart = function () {
+  window.location.href = "pages/modals/cart-modal.html";
+};
 
-function buyNow() {
+window.buyNow = function () {
   window.location.href = "checkout.html";
-}
+};
+
+
 // Mobile menu initialization is handled by utils.js initMobileMenu()
